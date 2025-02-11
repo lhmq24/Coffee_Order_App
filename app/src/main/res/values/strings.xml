@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Coffee Order App</string>
+    <string name="order_history">Order History</string>
+    <string name="table_number">Table %d</string>
+    <string name="table_status">%s</string>
+    <string name="table_amount">$%.2f</string>
+    <string name="table_image_description">Table %d Image</string>
+</resources>
