@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,7 +27,9 @@ public class TableActivity extends AppCompatActivity {
         //Add textview -> dynamic text
         try {
             table_number = getIntent().getIntExtra("tableNumber", -1);
-            toolbar.setTitle(String.format(Locale.getDefault(), "Table %d", table_number));
+            TextView title = findViewById(R.id.toolbar_title);
+            String s_title = getString(R.string.table_number,table_number);
+            title.setText(s_title);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

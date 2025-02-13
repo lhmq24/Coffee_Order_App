@@ -72,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId(); // Get selected menu item ID
 
         if (id == R.id.toolbar_history) {
-            //switch to Shop's order history
+            Intent intent = new Intent(MainActivity.this, OrderHistoryActivity.class);
+            startActivity(intent);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
             return true;
         }
         return super.onOptionsItemSelected(item);
