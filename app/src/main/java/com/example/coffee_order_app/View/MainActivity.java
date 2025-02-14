@@ -1,4 +1,4 @@
-package com.example.coffee_order_app;
+package com.example.coffee_order_app.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.coffee_order_app.Adapter.MainActivityAdapter;
+import com.example.coffee_order_app.Model.Table;
+import com.example.coffee_order_app.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private GridView tables;
     private List<Table> tableList;
-    private TableAdapter tableAdapter;
+    private MainActivityAdapter mainActivityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,26 +37,30 @@ public class MainActivity extends AppCompatActivity {
         //Add toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         //Add tables
         tables = findViewById(R.id.table_grid_view);
         tableList = new ArrayList<>();
 
         // Add tables (For testing UI, must load from a database)
-        tableList.add(new Table(1, R.drawable.table_img, "Available", 0.00));
-        tableList.add(new Table(2, R.drawable.table_img, "Occupied", 15.50));
-        tableList.add(new Table(3, R.drawable.table_img, "Available", 0.00));
-        tableList.add(new Table(4, R.drawable.table_img, "Occupied", 22.30));
+        tableList.add(new Table(1, 1));
+        tableList.add(new Table(2, 2));
+        tableList.add(new Table(3, 3));
+        tableList.add(new Table(4, 4));
 
         //Add adapter to tables grid view
-        tableAdapter = new TableAdapter(this, tableList);
-        tables.setAdapter(tableAdapter);
+        mainActivityAdapter = new MainActivityAdapter(this, tableList);
+        //Call getCount() for number of element and getView() for each GridView element
+        tables.setAdapter(mainActivityAdapter);
 
         // Click event to open TableActivity
         tables.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
             Table selectedTable = tableList.get(position);
             Intent intent = new Intent(MainActivity.this, TableActivity.class);
-            intent.putExtra("tableNumber", selectedTable.getNumber());
+            intent.putExtra("tableNumber", selectedTable.getTableNumber());
             startActivity(intent);
         });
 

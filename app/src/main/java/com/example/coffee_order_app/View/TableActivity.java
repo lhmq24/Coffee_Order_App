@@ -1,5 +1,6 @@
-package com.example.coffee_order_app;
+package com.example.coffee_order_app.View;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,7 +10,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Locale;
+import com.example.coffee_order_app.R;
+
 import java.util.Objects;
 
 public class TableActivity extends AppCompatActivity {
@@ -53,7 +55,10 @@ public class TableActivity extends AppCompatActivity {
         int id = item.getItemId(); // Get selected menu item ID
 
         if (id == R.id.toolbar_history) {
-            //Show order history
+            //Move to order history view
+            Intent intent = new Intent(TableActivity.this, OrderHistoryActivity.class);
+            startActivity(intent);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
             return true;
         } else if (id == R.id.toolbar_go_back) {
             //Return to main activity
