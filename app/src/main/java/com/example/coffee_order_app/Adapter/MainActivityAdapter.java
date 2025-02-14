@@ -1,4 +1,4 @@
-package com.example.coffee_order_app;
+package com.example.coffee_order_app.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,13 +10,16 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.coffee_order_app.Model.Table;
+import com.example.coffee_order_app.R;
+
 import java.util.List;
 
-public class TableAdapter extends BaseAdapter {
+public class MainActivityAdapter extends BaseAdapter {
     private final Context context;
     private List<Table> tableList;
 
-    public TableAdapter(Context context, List<Table> tableList) {
+    public MainActivityAdapter(Context context, List<Table> tableList) {
         this.context = context;
         this.tableList = tableList;
     }
@@ -49,15 +52,18 @@ public class TableAdapter extends BaseAdapter {
         TextView tableStatus = convertView.findViewById(R.id.tableStatus);
         TextView tableAmount = convertView.findViewById(R.id.tableAmount);
 
-//        tableImage.setImageResource(table.getImage());
-        tableNumber.setText(context.getString(R.string.table_number, table.getNumber()));
-        tableStatus.setText(context.getString(R.string.table_status, table.getStatus()));
+        tableImage.setImageResource(R.drawable.table_img);
+        tableNumber.setText(context.getString(R.string.table_number, table.getTableNumber()));
+        String status = table.getStatus() == 0 ? "Available" : "Not Available";
+        tableStatus.setText(context.getString(R.string.table_status, status));
         tableAmount.setText(context.getString(R.string.table_amount, table.getTotalAmount()));
 
         // Change color based on table status
-        if (table.getStatus().equals("Occupied")) {
+        if (table.getStatus() == 1) {
+            //Table is not available
             tableStatus.setTextColor(ContextCompat.getColor(context, R.color.red));
         } else {
+            //Table is available
             tableStatus.setTextColor(ContextCompat.getColor(context, R.color.green));
         }
 
