@@ -15,5 +15,78 @@
             layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <!-- Search Box for Beverages -->
+        <android.widget.EditText
+            android:id="@+id/searchBeverage"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/search_box_hint"
+            android:inputType="text"
+            android:padding="10dp" />
+
+        <!-- Scrollable Beverage List -->
+
+        <!-- Searched match beverages Table -->
+        <ListView
+            android:id="@+id/matchedBeveragesList"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <android.widget.TableLayout
+            android:id="@+id/orderDetailTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:stretchColumns="1">
+
+            <!-- Table Header -->
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/Order_beverage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Order_item_price" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Order_quantity" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Order_status" />
+            </TableRow>
+
+            <!-- Dynamic rows will be added here for each order item -->
+        </android.widget.TableLayout>
+
+        <!-- Total Price -->
+        <TextView
+            android:id="@+id/totalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/Order_total_price"
+            android:textAppearance="?android:textAppearanceLarge" />
+
+        <!-- Paid Button -->
+        <Button
+            android:id="@+id/markAsPaidButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:text="@string/Order_button_text" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

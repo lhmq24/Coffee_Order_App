@@ -18,9 +18,6 @@ public class Table {
     @ColumnInfo(name = "tbl_status")
     private int status = 0; // 0 = available, 1 = occupied
 
-    @ColumnInfo(name = "tbl_total_amount")
-    private float totalAmount = 0;
-
     public Table(int id, int tableNumber) {
         this.id = id;
         this.tableNumber = tableNumber;
@@ -48,12 +45,5 @@ public class Table {
         this.status = status;
     }
 
-    public float getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(float totalAmount) {
-        this.totalAmount = totalAmount;
-    }
 }
 

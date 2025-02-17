@@ -3,6 +3,15 @@
     <string name="order_history">Order History</string>
     <string name="table_number">Table %d</string>
     <string name="table_status">%s</string>
-    <string name="table_amount">$%.2f</string>
+    <string name="table_amount">$%d</string>
     <string name="table_image_description">Table %d Image</string>
+    <string name="pay_time">Paid at: %1$s</string>
+    <string name="receipt_table_number">Table %d Receipt</string>
+    <string name="search_box_hint">Search for beverages</string>
+    <string name="Order_beverage">%s</string>
+    <string name="Order_item_price">%d</string>
+    <string name="Order_quantity">%d</string>
+    <string name="Order_status">%s</string>
+    <string name="Order_total_price">Total: %d VND</string>
+    <string name="Order_button_text">Mark as Paid</string>
 </resources>

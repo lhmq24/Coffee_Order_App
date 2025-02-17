@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.toolbar_history) {
             Intent intent = new Intent(MainActivity.this, OrderHistoryActivity.class);
             startActivity(intent);
-            Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
             return true;
         }
         return super.onOptionsItemSelected(item);

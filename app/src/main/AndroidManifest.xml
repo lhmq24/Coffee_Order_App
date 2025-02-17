@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Coffee_Order_App"
         tools:targetApi="31">
         <activity
+            android:name=".View.ReceiptDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.OrderHistoryActivity"
             android:exported="false" />
         <activity
