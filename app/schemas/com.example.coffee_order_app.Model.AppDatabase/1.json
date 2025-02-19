@@ -1,0 +1,328 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "bc5a20cd0cd0f32e677d5adcd6e317a2",
+    "entities": [
+      {
+        "tableName": "tables",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tbl_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `tbl_number` INTEGER NOT NULL, `tbl_status` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "tbl_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tableNumber",
+            "columnName": "tbl_number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "tbl_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "tbl_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "receipts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rec_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `rec_order_id` INTEGER NOT NULL, `rec_table_id` INTEGER NOT NULL, `rec_total_price` REAL NOT NULL, `rec_paid_time` INTEGER NOT NULL, FOREIGN KEY(`rec_order_id`) REFERENCES `orders`(`ord_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`rec_table_id`) REFERENCES `tables`(`tbl_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "rec_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderId",
+            "columnName": "rec_order_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tableId",
+            "columnName": "rec_table_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalPrice",
+            "columnName": "rec_total_price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paidTime",
+            "columnName": "rec_paid_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "rec_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_receipts_rec_order_id",
+            "unique": false,
+            "columnNames": [
+              "rec_order_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_receipts_rec_order_id` ON `${TABLE_NAME}` (`rec_order_id`)"
+          },
+          {
+            "name": "index_receipts_rec_table_id",
+            "unique": false,
+            "columnNames": [
+              "rec_table_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_receipts_rec_table_id` ON `${TABLE_NAME}` (`rec_table_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "orders",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "rec_order_id"
+            ],
+            "referencedColumns": [
+              "ord_id"
+            ]
+          },
+          {
+            "table": "tables",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "rec_table_id"
+            ],
+            "referencedColumns": [
+              "tbl_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "order_items",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`item_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `item_order_id` INTEGER NOT NULL, `item_beverage_id` INTEGER NOT NULL, `item_quantity` INTEGER NOT NULL, `item_price` REAL NOT NULL, `item_status` INTEGER NOT NULL, `item_order_time` INTEGER NOT NULL, FOREIGN KEY(`item_order_id`) REFERENCES `orders`(`ord_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`item_beverage_id`) REFERENCES `beverages`(`bev_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "item_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderId",
+            "columnName": "item_order_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "beverageId",
+            "columnName": "item_beverage_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantity",
+            "columnName": "item_quantity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "item_price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "item_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderTime",
+            "columnName": "item_order_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "item_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_order_items_item_order_id",
+            "unique": false,
+            "columnNames": [
+              "item_order_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_order_items_item_order_id` ON `${TABLE_NAME}` (`item_order_id`)"
+          },
+          {
+            "name": "index_order_items_item_beverage_id",
+            "unique": false,
+            "columnNames": [
+              "item_beverage_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_order_items_item_beverage_id` ON `${TABLE_NAME}` (`item_beverage_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "orders",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "item_order_id"
+            ],
+            "referencedColumns": [
+              "ord_id"
+            ]
+          },
+          {
+            "table": "beverages",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "item_beverage_id"
+            ],
+            "referencedColumns": [
+              "bev_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "orders",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ord_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ord_table_id` INTEGER NOT NULL, `ord_total_price` REAL NOT NULL, `ord_status` INTEGER NOT NULL, `ord_created_at` INTEGER NOT NULL, FOREIGN KEY(`ord_table_id`) REFERENCES `tables`(`tbl_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ord_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tableId",
+            "columnName": "ord_table_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalPrice",
+            "columnName": "ord_total_price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "ord_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "ord_created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "ord_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_orders_ord_table_id",
+            "unique": false,
+            "columnNames": [
+              "ord_table_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_orders_ord_table_id` ON `${TABLE_NAME}` (`ord_table_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "tables",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "ord_table_id"
+            ],
+            "referencedColumns": [
+              "tbl_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "beverages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`bev_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `bev_name` TEXT, `bev_price` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "bev_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "bev_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "bev_price",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "bev_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bc5a20cd0cd0f32e677d5adcd6e317a2')"
+    ]
+  }
+}
