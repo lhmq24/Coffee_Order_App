@@ -10,7 +10,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/table_img" />
+        android:src="@drawable/table_img_1" />
 
     <!-- Middle LinearLayout (Expands to Fill Remaining Space) -->
     <LinearLayout

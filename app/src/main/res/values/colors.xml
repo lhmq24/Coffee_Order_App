@@ -3,5 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#E7135B</color>
-    <color name="green">#26E411</color>
+    <color name="green">#5C810C</color>
+    <color name="toolbar_color">#68413A</color>
+    <color name="table_item_color">#C5BBA5</color>
+    <color name="table_item_text_color">#4B2E23</color>
 </resources>

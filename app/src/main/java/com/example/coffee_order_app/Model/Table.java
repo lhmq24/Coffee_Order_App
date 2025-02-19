@@ -32,13 +32,19 @@ public class Table {
         return tableNumber;
     }
 
-    //Setter
-    public void setTableNumber(int tableNumber) {
-        this.tableNumber = tableNumber;
-    }
-
     public int getStatus() {
         return status;
+    }
+
+
+    //Setter
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 
     public void setStatus(int status) {

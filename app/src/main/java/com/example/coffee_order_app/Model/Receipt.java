@@ -17,7 +17,9 @@ import androidx.room.PrimaryKey;
                         childColumns = "rec_table_id",
                         onDelete = ForeignKey.CASCADE)
         },
-        indices = {@Index(value = "rec_order_id")}
+        indices = {@Index(value = "rec_order_id"),
+                @Index(value = "rec_table_id")
+        }
 )
 public class Receipt {
     @PrimaryKey(autoGenerate = true)
@@ -52,30 +54,37 @@ public class Receipt {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
+
 
     public int getTableId() {
         return tableId;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public long getPaidTime() {
+        return paidTime;
+    }
+
+    //Setter
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public void setTableId(int tableId) {
         this.tableId = tableId;
     }
 
-    //Setter
-
-    public float getTotalPrice() {
-        return totalPrice;
-    }
-
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public long getPaidTime() {
-        return paidTime;
     }
 
     public void setPaidTime(long paidTime) {

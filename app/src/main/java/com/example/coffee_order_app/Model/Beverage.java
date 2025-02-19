@@ -30,13 +30,17 @@ public class Beverage {
         return name;
     }
 
-    //Setter
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public float getPrice() {
         return price;
+    }
+    //Setter
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPrice(float price) {

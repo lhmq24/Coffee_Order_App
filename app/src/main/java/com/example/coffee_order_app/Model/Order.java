@@ -53,11 +53,6 @@ public class Order {
         return status;
     }
 
-    //Setter
-    public void setStatus(int newStatus) {
-        this.status = newStatus;
-    }
-
     public long getCreatedAt() {
         return createdAt;
     }
@@ -66,9 +61,25 @@ public class Order {
         return totalPrice;
     }
 
+    //Setter
+    public void setStatus(int newStatus) {
+        this.status = newStatus;
+    }
+
     public void setTotalPrice(float newTotalPrice) {
         this.totalPrice = newTotalPrice;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTableId(int tableId) {
+        this.tableId = tableId;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+    }
 }
 

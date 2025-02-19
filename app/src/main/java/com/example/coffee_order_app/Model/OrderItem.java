@@ -82,6 +82,10 @@ public class OrderItem {
 
     //Setter
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public float getPrice() {
         return price;
     }

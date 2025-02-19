@@ -1,5 +1,6 @@
 package com.example.coffee_order_app.Adapter;
 
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,19 @@ import com.example.coffee_order_app.Model.Table;
 import com.example.coffee_order_app.R;
 
 import java.util.List;
+import java.util.Random;
 
 public class MainActivityAdapter extends BaseAdapter {
     private final Context context;
     private List<Table> tableList;
+
+    private int[] tableImages = {
+            R.drawable.table_img_1,
+            R.drawable.table_img_2,
+            R.drawable.table_img_3,
+            R.drawable.table_img_4,
+            R.drawable.table_img_5
+    };
 
     public MainActivityAdapter(Context context, List<Table> tableList) {
         this.context = context;
@@ -52,11 +62,17 @@ public class MainActivityAdapter extends BaseAdapter {
         TextView tableStatus = convertView.findViewById(R.id.tableStatus);
         TextView tableAmount = convertView.findViewById(R.id.tableAmount);
 
-        tableImage.setImageResource(R.drawable.table_img);
+        //Random set table image
+        Random random = new Random();
+        for (int i = 0; i < 15; i++) {
+            int randomIndex = random.nextInt(tableImages.length); // Get a random index
+            tableImage.setImageResource(tableImages[randomIndex]); // Set random image
+        }
+
         tableNumber.setText(context.getString(R.string.table_number, table.getTableNumber()));
         String status = table.getStatus() == 0 ? "Available" : "Not Available";
         tableStatus.setText(context.getString(R.string.table_status, status));
-        tableAmount.setText(context.getString(R.string.table_amount, table.getTotalAmount()));
+//        tableAmount.setText(context.getString(R.string.table_amount, table.getTotalAmount()));
 
         // Change color based on table status
         if (table.getStatus() == 1) {

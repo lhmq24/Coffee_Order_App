@@ -12,9 +12,11 @@ import android.widget.GridView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.example.coffee_order_app.Adapter.MainActivityAdapter;
 import com.example.coffee_order_app.Model.Table;
+import com.example.coffee_order_app.Presenter.MainPresenter;
 import com.example.coffee_order_app.R;
 
 import java.util.ArrayList;
@@ -26,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private GridView tables;
     private List<Table> tableList;
-    private MainActivityAdapter mainActivityAdapter;
+    private MainActivityAdapter adapter;
+    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +43,29 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+        toolbar.getOverflowIcon().setTint(ContextCompat.getColor(this, R.color.white));
 
-        //Add tables
+
+        //Initialize views, presenter
         tables = findViewById(R.id.table_grid_view);
+        presenter = new MainPresenter(this);
         tableList = new ArrayList<>();
 
-        // Add tables (For testing UI, must load from a database)
-        tableList.add(new Table(1, 1));
-        tableList.add(new Table(2, 2));
-        tableList.add(new Table(3, 3));
-        tableList.add(new Table(4, 4));
-
         //Add adapter to tables grid view
-        mainActivityAdapter = new MainActivityAdapter(this, tableList);
+        adapter = new MainActivityAdapter(this, tableList);
         //Call getCount() for number of element and getView() for each GridView element
-        tables.setAdapter(mainActivityAdapter);
+        tables.setAdapter(adapter);
+
+        //Add tables to views
+        presenter.getAllTables().observe(this, tables -> {
+            if (tables != null) {
+                tableList.clear();
+                tableList.addAll(tables); // Update list
+                adapter.notifyDataSetChanged(); // Refresh UI
+            }
+        });
+
+
 
         // Click event to open TableActivity
         tables.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
