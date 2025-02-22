@@ -1,27 +1,25 @@
 package com.example.coffee_order_app.Model;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "beverages")
 public class Beverage {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "bev_id")
+
+    @SerializedName("bev_id")
     private int id;
 
-    @ColumnInfo(name = "bev_name")
+    @SerializedName("bev_name")
     private String name;
 
-    @ColumnInfo(name = "bev_price")
+    @SerializedName("bev_price")
     private float price;
 
+    // Constructor
     public Beverage(String name, float price) {
         this.name = name;
         this.price = price;
     }
 
-    //Getter
+    // Getter methods
     public int getId() {
         return id;
     }
@@ -33,8 +31,8 @@ public class Beverage {
     public float getPrice() {
         return price;
     }
-    //Setter
 
+    // Setter methods
     public void setId(int id) {
         this.id = id;
     }
@@ -47,4 +45,3 @@ public class Beverage {
         this.price = price;
     }
 }
-

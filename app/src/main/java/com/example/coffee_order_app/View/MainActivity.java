@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
         //Add toolbar
@@ -43,28 +41,18 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        toolbar.getOverflowIcon().setTint(ContextCompat.getColor(this, R.color.white));
+        Objects.requireNonNull(toolbar.getOverflowIcon()).setTint(ContextCompat.getColor(this, R.color.white));
 
-
-        //Initialize views, presenter
+        //Initialize view, presenter
         tables = findViewById(R.id.table_grid_view);
         presenter = new MainPresenter(this);
         tableList = new ArrayList<>();
-
-        //Add adapter to tables grid view
         adapter = new MainActivityAdapter(this, tableList);
-        //Call getCount() for number of element and getView() for each GridView element
         tables.setAdapter(adapter);
 
-        //Add tables to views
-        presenter.getAllTables().observe(this, tables -> {
-            if (tables != null) {
-                tableList.clear();
-                tableList.addAll(tables); // Update list
-                adapter.notifyDataSetChanged(); // Refresh UI
-            }
-        });
-
+        // Fetch tables using the presenter
+        presenter.getAllTables();
+        System.out.println("MainActivity da goi getAllTables");
 
 
         // Click event to open TableActivity
@@ -75,6 +63,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+    }
+
+    // Method to receive table list from presenter
+    public void showTables(List<Table> tablesList) {
+        tableList.clear();
+        tableList.addAll(tablesList); // Update list
+        adapter.notifyDataSetChanged(); // Refresh UI
+    }
+
+    public void showError(String message) {
+        System.out.println("Error: " + message);
     }
 
     @Override

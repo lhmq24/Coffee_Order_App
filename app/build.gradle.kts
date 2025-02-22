@@ -30,13 +30,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    defaultConfig {
-        javaCompileOptions {
-            annotationProcessorOptions {
-                argument("room.schemaLocation", "$projectDir/schemas")
-            }
-        }
-    }
+//    defaultConfig {
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                argument("room.schemaLocation", "$projectDir/schemas")
+//            }
+//        }
+//    }
 }
 
 dependencies {
@@ -44,10 +44,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.room.common)
-    implementation(libs.room.runtime)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+//    implementation(libs.room.common)
+//    implementation(libs.room.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    annotationProcessor(libs.room.compiler)
+//    annotationProcessor(libs.room.compiler)
 }

@@ -1,43 +1,25 @@
 package com.example.coffee_order_app.Model;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
-import androidx.room.PrimaryKey;
+import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "receipts",
-        foreignKeys = {
-                @ForeignKey(entity = Order.class,
-                        parentColumns = "ord_id",
-                        childColumns = "rec_order_id",
-                        onDelete = ForeignKey.CASCADE),
-                @ForeignKey(entity = Table.class,
-                        parentColumns = "tbl_id",
-                        childColumns = "rec_table_id",
-                        onDelete = ForeignKey.CASCADE)
-        },
-        indices = {@Index(value = "rec_order_id"),
-                @Index(value = "rec_table_id")
-        }
-)
 public class Receipt {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "rec_id")
+
+    @SerializedName("rec_id")
     private int id;
 
-    @ColumnInfo(name = "rec_order_id")
+    @SerializedName("rec_order_id")
     private int orderId;
 
-    @ColumnInfo(name = "rec_table_id")
+    @SerializedName("rec_table_id")
     private int tableId;
 
-    @ColumnInfo(name = "rec_total_price")
+    @SerializedName("rec_total_price")
     private float totalPrice;
 
-    @ColumnInfo(name = "rec_paid_time")
+    @SerializedName("rec_paid_time")
     private long paidTime;
 
+    // Constructor
     public Receipt(int orderId, int tableId, float totalPrice) {
         this.orderId = orderId;
         this.tableId = tableId;
@@ -45,7 +27,7 @@ public class Receipt {
         this.paidTime = System.currentTimeMillis();
     }
 
-    //Getter
+    // Getter methods
     public int getId() {
         return id;
     }
@@ -53,8 +35,6 @@ public class Receipt {
     public int getOrderId() {
         return orderId;
     }
-
-
 
     public int getTableId() {
         return tableId;
@@ -68,9 +48,7 @@ public class Receipt {
         return paidTime;
     }
 
-    //Setter
-
-
+    // Setter methods
     public void setId(int id) {
         this.id = id;
     }
@@ -91,4 +69,3 @@ public class Receipt {
         this.paidTime = paidTime;
     }
 }
-

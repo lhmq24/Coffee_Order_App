@@ -1,25 +1,45 @@
 package com.example.coffee_order_app.Presenter;
 
-import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-
-import com.example.coffee_order_app.Model.AppDatabase;
-import com.example.coffee_order_app.Model.DAO.TableDAO;
+import com.example.coffee_order_app.Model.ApiClient;
+import com.example.coffee_order_app.Model.ApiService;
 import com.example.coffee_order_app.Model.Table;
+import com.example.coffee_order_app.View.MainActivity;
 
 import java.util.List;
 
-public class MainPresenter {
-    private TableDAO tableDAO;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    public MainPresenter(Context context) {
-        // Lấy instance của database và DAO
-        AppDatabase db = AppDatabase.getDatabase(context);
-        tableDAO = db.tableDAO();
+public class MainPresenter {
+
+    private final ApiService apiService;
+    private MainActivity activity;
+
+    public MainPresenter(MainActivity view) {
+        this.activity = view;
+        this.apiService = ApiClient.getClient().create(ApiService.class);
     }
 
-    public LiveData<List<Table>> getAllTables() {
-        return tableDAO.getAllTables();
+    public void getAllTables() {
+        ApiClient.init(ApiClient.getClient().create(ApiService.class), () -> {
+            Call<List<Table>> call = ApiClient.getClient().create(ApiService.class).getAllTables();
+            call.enqueue(new Callback<List<Table>>() {
+                @Override
+                public void onResponse(Call<List<Table>> call, Response<List<Table>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        activity.showTables(response.body());
+                    } else {
+                        activity.showError("Failed to load items");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Table>> call, Throwable t) {
+                    activity.showError(t.getMessage());
+                }
+            });
+        });
     }
 }
