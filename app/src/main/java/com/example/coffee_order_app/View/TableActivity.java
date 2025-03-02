@@ -16,10 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.coffee_order_app.Adapter.TableActivityAdapter;
-import com.example.coffee_order_app.Model.OrderItem;
+import com.example.coffee_order_app.Model.Beverage;
 import com.example.coffee_order_app.R;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class TableActivity extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class TableActivity extends AppCompatActivity {
     private EditText search_box;
     private ListView matchedBeveragesList;
     private TableActivityAdapter adapter;
-    private ArrayList<OrderItem> OrderItemList;
+    private List<Beverage> OrderItemList;
     //    private TablePresenter presenter;
     private TextView total;
     private Button button;
