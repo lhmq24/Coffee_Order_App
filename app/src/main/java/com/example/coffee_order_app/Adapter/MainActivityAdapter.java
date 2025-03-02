@@ -2,7 +2,6 @@ package com.example.coffee_order_app.Adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,6 @@ public class MainActivityAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d("MainActivityAdapter", "Rendering table at position: " + position);
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.table_item, parent, false);
         }

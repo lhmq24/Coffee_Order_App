@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffee_order_app.R;
 
-public class ReceiptDetailActivity extends AppCompatActivity {
+public class OrderDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TextView title;

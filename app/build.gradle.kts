@@ -29,8 +29,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        viewBinding = true
+    }
 
-//    defaultConfig {
+//    defaultConfig {   //For SQLite Room Annotation
 //        javaCompileOptions {
 //            annotationProcessorOptions {
 //                argument("room.schemaLocation", "$projectDir/schemas")
@@ -46,6 +49,9 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.annotation)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
 //    implementation(libs.room.common)
 //    implementation(libs.room.runtime)
     testImplementation(libs.junit)

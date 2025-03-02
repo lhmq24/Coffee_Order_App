@@ -5,39 +5,46 @@ import com.google.gson.annotations.SerializedName;
 public class OrderItem {
 
     @SerializedName("item_id")
-    private int id;
+    private int itemId;
 
-    @SerializedName("item_order_id")
+    @SerializedName("ord_id")
     private int orderId;
 
-    @SerializedName("item_beverage_id")
+    @SerializedName("bev_id")
     private int beverageId;
 
     @SerializedName("item_quantity")
-    private int quantity;
+    private int itemQuantity;
 
-    @SerializedName("item_price")
-    private float price;
+    @SerializedName("item_current_price")
+    private float itemPrice;
+
+    @SerializedName("item_note")
+    private int itemNote;
 
     @SerializedName("item_status")
-    private int status;  // 0 = Not served (default), 1 = Served
+    private int itemStatus;  // 0 = Not served (default), 1 = Served
 
-    @SerializedName("item_order_time")
-    private long orderTime;
 
     // Constructor
-    public OrderItem(int orderId, int beverageId, int quantity, float price) {
+
+    public OrderItem(int itemId, int orderId, int beverageId,
+                     int itemQuantity, float itemPrice,
+                     int itemNote, int itemStatus) {
+        this.itemId = itemId;
         this.orderId = orderId;
         this.beverageId = beverageId;
-        this.quantity = quantity;
-        this.price = price;
-        this.status = 0;
-        this.orderTime = System.currentTimeMillis();
+        this.itemQuantity = itemQuantity;
+        this.itemPrice = itemPrice;
+        this.itemNote = itemNote;
+        this.itemStatus = itemStatus;
     }
 
     // Getter methods
-    public int getId() {
-        return id;
+
+
+    public int getItemId() {
+        return itemId;
     }
 
     public int getOrderId() {
@@ -48,25 +55,26 @@ public class OrderItem {
         return beverageId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
-    public float getPrice() {
-        return price;
+    public int getItemQuantity() {
+        return itemQuantity;
     }
 
-    public int getStatus() {
-        return status;
+    public void setItemQuantity(int itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 
-    public long getOrderTime() {
-        return orderTime;
+    public float getItemPrice() {
+        return itemPrice;
     }
 
     // Setter methods
-    public void setId(int id) {
-        this.id = id;
+
+    public void setItemPrice(float itemPrice) {
+        this.itemPrice = itemPrice;
     }
 
     public void setOrderId(int orderId) {
@@ -77,19 +85,19 @@ public class OrderItem {
         this.beverageId = beverageId;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public int getItemNote() {
+        return itemNote;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setItemNote(int itemNote) {
+        this.itemNote = itemNote;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public int getItemStatus() {
+        return itemStatus;
     }
 
-    public void setOrderTime(long orderTime) {
-        this.orderTime = orderTime;
+    public void setItemStatus(int itemStatus) {
+        this.itemStatus = itemStatus;
     }
 }

@@ -9,30 +9,30 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.coffee_order_app.Model.Receipt;
+import com.example.coffee_order_app.Model.Order;
 import com.example.coffee_order_app.R;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class OrderHistoryActivityAdapter extends BaseAdapter {
     private final Context context;
-    private ArrayList<Receipt> ReceiptList;
+    private List<Order> OrderList;
 
-    public OrderHistoryActivityAdapter(Context context, ArrayList<Receipt> ReceiptList) {
+    public OrderHistoryActivityAdapter(Context context, List<Order> OrderList) {
         this.context = context;
-        this.ReceiptList = ReceiptList;
+        this.OrderList = OrderList;
     }
 
     @Override
     public int getCount() {
-        return ReceiptList.size();
+        return OrderList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return ReceiptList.get(position);
+        return OrderList.get(position);
     }
 
     @Override
@@ -47,18 +47,16 @@ public class OrderHistoryActivityAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.history_item, parent, false);
         }
 
-        Receipt receipt = ReceiptList.get(position);
+        Order Order = OrderList.get(position);
 
         ImageView tableImage = convertView.findViewById(R.id.tableImage);
         TextView tableNumber = convertView.findViewById(R.id.history_table_number);
         TextView tableAmount = convertView.findViewById(R.id.history_table_amount);
-        TextView tablePayTime = convertView.findViewById(R.id.history_paid_time);
+
         ;
         //Get table ID for table name, must be change
-        tableNumber.setText(context.getString(R.string.table_number, receipt.getTableId()));
-        tableAmount.setText(context.getString(R.string.table_amount, receipt.getTotalPrice()));
-        tablePayTime.setText(context.getString(R.string.pay_time, convertTimestampToDate(receipt.getPaidTime())));
-
+        tableNumber.setText(context.getString(R.string.table_number, Order.getTableId()));
+        tableAmount.setText(context.getString(R.string.table_amount, Order.getTotalPrice()));
         return convertView;
     }
 

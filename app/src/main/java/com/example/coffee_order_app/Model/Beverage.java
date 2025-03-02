@@ -10,26 +10,22 @@ public class Beverage {
     @SerializedName("bev_name")
     private String name;
 
-    @SerializedName("bev_price")
-    private float price;
 
     // Constructor
-    public Beverage(String name, float price) {
+    public Beverage(int id, String name) {
+        this.id = id;
         this.name = name;
-        this.price = price;
     }
 
     // Getter methods
+
+
     public int getId() {
         return id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public float getPrice() {
-        return price;
     }
 
     // Setter methods
@@ -39,9 +35,5 @@ public class Beverage {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 }

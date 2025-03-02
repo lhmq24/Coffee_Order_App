@@ -6,22 +6,38 @@ public class Table {
 
     @SerializedName("tbl_id")
     private int id;
+    @SerializedName("floor_number")
+    private int floorNumber;
 
     @SerializedName("tbl_number")
     private int tableNumber;
+
+    @SerializedName("tbl_capacity")
+    private int tableCapacity;
 
     @SerializedName("tbl_status")
     private int status; // 0 = available, 1 = occupied
 
     // Constructor
-    public Table(int id, int tableNumber) {
+    public Table(int id, int floorNumber, int tableNumber, int capacity, int status) {
         this.id = id;
+        this.floorNumber = floorNumber;
         this.tableNumber = tableNumber;
+        this.tableCapacity = capacity;
+        this.status = status;
     }
 
     // Getter methods
     public int getId() {
         return id;
+    }
+
+    public int getTableCapacity() {
+        return tableCapacity;
+    }
+
+    public void setTableCapacity(int tableCapacity) {
+        this.tableCapacity = tableCapacity;
     }
 
     public int getTableNumber() {
@@ -35,6 +51,14 @@ public class Table {
     // Setter methods
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getFloorNumber() {
+        return floorNumber;
+    }
+
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
     }
 
     public void setTableNumber(int tableNumber) {

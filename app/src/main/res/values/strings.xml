@@ -14,4 +14,19 @@
     <string name="Order_status">%s</string>
     <string name="Order_total_price">Total: %.02f VND</string>
     <string name="Order_button_text">Mark as Paid</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="login_text">Log In</string>
+    <string name="username_hint">Enter your username</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="forgot_password_text"><u>Forgot password?</u></string>
+    <string name="beverage_name">%s</string>
+    <string name="beverage_price">%.02f VND</string>
 </resources>

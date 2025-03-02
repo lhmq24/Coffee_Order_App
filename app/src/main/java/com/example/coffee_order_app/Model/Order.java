@@ -2,12 +2,14 @@ package com.example.coffee_order_app.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.sql.Timestamp;
+
 public class Order {
 
     @SerializedName("ord_id")
-    private int id;
+    private int orderId;
 
-    @SerializedName("ord_table_id")
+    @SerializedName("tbl_id")
     private int tableId;
 
     @SerializedName("ord_total_price")
@@ -17,40 +19,54 @@ public class Order {
     private int status; // 0 = Open, 1 = Paid
 
     @SerializedName("ord_created_at")
-    private long createdAt; // Timestamp in milliseconds
+    private Timestamp createdAt;
+
+    @SerializedName("ord_paid_at")
+    private Timestamp paidAt;
 
     // Constructor
-    public Order(int tableId) {
+
+
+    public Order(int orderId, int tableId, float totalPrice, int status,
+                 Timestamp createdAt, Timestamp paidAt) {
+        this.orderId = orderId;
         this.tableId = tableId;
-        this.totalPrice = 0;
-        this.status = 0;
-        this.createdAt = System.currentTimeMillis(); // Auto-assign created time
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.paidAt = paidAt;
     }
 
     // Getter methods
-    public int getId() {
-        return id;
+
+    public int getOrderId() {
+        return orderId;
     }
 
     public int getTableId() {
         return tableId;
     }
 
-    // Setter methods
-    public void setId(int id) {
-        this.id = id;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public long getCreatedAt() {
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public float getTotalPrice() {
-        return totalPrice;
+    // Setter methods
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void setTableId(int tableId) {
@@ -65,7 +81,11 @@ public class Order {
         this.status = status;
     }
 
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
+    public Timestamp getPaidAt() {
+        return paidAt;
+    }
+
+    public void setPaidAt(Timestamp paidAt) {
+        this.paidAt = paidAt;
     }
 }

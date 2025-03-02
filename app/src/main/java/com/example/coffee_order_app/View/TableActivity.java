@@ -27,7 +27,7 @@ public class TableActivity extends AppCompatActivity {
     private EditText search_box;
     private ListView matchedBeveragesList;
     private TableActivityAdapter adapter;
-    private ArrayList<OrderItem> OrderItemList; // Assuming Receipt is the model for orders
+    private ArrayList<OrderItem> OrderItemList;
     //    private TablePresenter presenter;
     private TextView total;
     private Button button;
@@ -37,10 +37,8 @@ public class TableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //Set toolbar title
-        //Add textview -> dynamic text
         try {
             int table_number = getIntent().getIntExtra("tableNumber", -1);
             TextView title = findViewById(R.id.toolbar_title);
@@ -49,10 +47,12 @@ public class TableActivity extends AppCompatActivity {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        // Set left icon
         toolbar.setNavigationIcon(R.drawable.go_back);
-        // Handle navigation click
         toolbar.setNavigationOnClickListener(v -> finish());
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        toolbar.setBackgroundResource(R.color.toolbar_color);
+
+
 
         //Initialize components
         search_box = findViewById(R.id.searchBeverage);
@@ -76,7 +76,7 @@ public class TableActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // This is where we capture the input text and pass it to the presenter
+                // Capture the input text and pass it to the presenter
                 String item_name = charSequence.toString().trim();
 //                presenter.queryBeverages(item_name); // Call presenter to query based on search text
             }
