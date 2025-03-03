@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.coffee_order_app.Model.Table;
+import com.example.coffee_order_app.Model.TableOrderDTO;
 import com.example.coffee_order_app.R;
 
 import java.util.List;
@@ -19,7 +19,11 @@ import java.util.Random;
 
 public class MainActivityAdapter extends BaseAdapter {
     private final Context context;
-    private List<Table> tableList;
+    ImageView tableImage;
+    TextView tableNumber;
+    TextView tableStatus;
+    TextView tableAmount;
+    private List<TableOrderDTO> tableList;
 
     private int[] tableImages = {
             R.drawable.table_img_1,
@@ -29,7 +33,7 @@ public class MainActivityAdapter extends BaseAdapter {
             R.drawable.table_img_5
     };
 
-    public MainActivityAdapter(Context context, List<Table> tableList) {
+    public MainActivityAdapter(Context context, List<TableOrderDTO> tableList) {
         this.context = context;
         this.tableList = tableList;
     }
@@ -55,12 +59,12 @@ public class MainActivityAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.table_item, parent, false);
         }
 
-        Table table = tableList.get(position);
+        TableOrderDTO table = tableList.get(position);
 
-        ImageView tableImage = convertView.findViewById(R.id.tableImage);
-        TextView tableNumber = convertView.findViewById(R.id.tableNumber);
-        TextView tableStatus = convertView.findViewById(R.id.tableStatus);
-        TextView tableAmount = convertView.findViewById(R.id.tableAmount);
+        tableImage = convertView.findViewById(R.id.tableImage);
+        tableNumber = convertView.findViewById(R.id.tableNumber);
+        tableStatus = convertView.findViewById(R.id.tableStatus);
+        tableAmount = convertView.findViewById(R.id.tableAmount);
 
         //Random set table image
         Random random = new Random();
@@ -69,13 +73,13 @@ public class MainActivityAdapter extends BaseAdapter {
             tableImage.setImageResource(tableImages[randomIndex]); // Set random image
         }
 
-        tableNumber.setText(context.getString(R.string.table_number, table.getTableNumber()));
-        String status = table.getStatus() == 0 ? "Available" : "Not Available";
+        tableNumber.setText(context.getString(R.string.table_number, table.getTable().getTableNumber()));
+        String status = table.getTable().getStatus() == 0 ? "Available" : "Not Available";
         tableStatus.setText(context.getString(R.string.table_status, status));
-//        tableAmount.setText(context.getString(R.string.table_amount, table.getTotalAmount()));
+        tableAmount.setText(context.getString(R.string.table_amount, table.getOrder().getTotalPrice()));
 
         // Change color based on table status
-        if (table.getStatus() == 1) {
+        if (table.getTable().getStatus() == 1) {
             //Table is not available
             tableStatus.setTextColor(ContextCompat.getColor(context, R.color.red));
         } else {

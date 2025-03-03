@@ -2,8 +2,6 @@ package com.example.coffee_order_app.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.sql.Timestamp;
-
 public class Order {
 
     @SerializedName("ord_id")
@@ -19,16 +17,15 @@ public class Order {
     private int status; // 0 = Open, 1 = Paid
 
     @SerializedName("ord_created_at")
-    private Timestamp createdAt;
+    private String createdAt;
 
     @SerializedName("ord_paid_at")
-    private Timestamp paidAt;
+    private String paidAt;
 
     // Constructor
 
-
-    public Order(int orderId, int tableId, float totalPrice, int status,
-                 Timestamp createdAt, Timestamp paidAt) {
+    public Order(int orderId, int tableId, float totalPrice,
+                 int status, String createdAt, String paidAt) {
         this.orderId = orderId;
         this.tableId = tableId;
         this.totalPrice = totalPrice;
@@ -47,26 +44,26 @@ public class Order {
         return tableId;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public float getTotalPrice() {
+        return totalPrice;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public float getTotalPrice() {
-        return totalPrice;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     // Setter methods
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
+    public String getPaidAt() {
+        return paidAt != null ? paidAt : "Not Paid";
     }
 
     public void setTableId(int tableId) {
@@ -81,11 +78,11 @@ public class Order {
         this.status = status;
     }
 
-    public Timestamp getPaidAt() {
-        return paidAt;
+    public void setPaidAt(String paidAt) {
+        this.paidAt = paidAt;
     }
 
-    public void setPaidAt(Timestamp paidAt) {
-        this.paidAt = paidAt;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 }

@@ -7,9 +7,9 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface ApiService {
-    @GET("Tables.php")
+    @GET("TableOrder.php")
         // API Endpoint
-    Call<List<Table>> getAllTables();
+    Call<List<TableOrderDTO>> getAllTables();
 
     @GET("Tables.php")
         // API Endpoint

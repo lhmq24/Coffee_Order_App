@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffee_order_app.Adapter.MainActivityAdapter;
-import com.example.coffee_order_app.Model.Table;
+import com.example.coffee_order_app.Model.TableOrderDTO;
 import com.example.coffee_order_app.Presenter.MainPresenter;
 import com.example.coffee_order_app.R;
 
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private GridView tables;
-    private List<Table> tableList;
+    private List<TableOrderDTO> tableList;
     private MainActivityAdapter adapter;
     private MainPresenter presenter;
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         //Initialize view, presenter
         tables = findViewById(R.id.table_grid_view);
         presenter = new MainPresenter(this);
-        tableList = new ArrayList<Table>();
+        tableList = new ArrayList<>();
         adapter = new MainActivityAdapter(this, tableList);
         tables.setAdapter(adapter);
 
@@ -66,19 +66,21 @@ public class MainActivity extends AppCompatActivity {
 
         // Click event to open TableActivity
         tables.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
-            Table selectedTable = tableList.get(position);
+            TableOrderDTO selectedTable = tableList.get(position);
             Intent intent = new Intent(MainActivity.this, TableActivity.class);
-            intent.putExtra("tableNumber", selectedTable.getTableNumber());
+            intent.putExtra("tableNumber", selectedTable.getTable().getTableNumber());
             startActivity(intent);
         });
 
     }
 
     // Method to receive table list from presenter
-    public void showTables(List<Table> tablesList) {
+    public void showTables(List<TableOrderDTO> tablesList) {
         tableList.clear();
-        tableList.addAll(tablesList); // Update list
-        adapter.notifyDataSetChanged(); // Refresh UI
+        if (tablesList != null) {
+            tableList.addAll(tablesList);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     public void showError(String message) {
