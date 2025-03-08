@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.coffee_order_app.Presenter.LogInPresenter;
 import com.example.coffee_order_app.R;
 
 public class LogInActivity extends AppCompatActivity {
@@ -40,6 +41,9 @@ public class LogInActivity extends AppCompatActivity {
         password = findViewById(R.id.editText_password);
         forgotpw = findViewById(R.id.ForgotPasswordTextView);
 
+        //Init presenter
+        LogInPresenter presenter = new LogInPresenter(LogInActivity.this);
+
         //Add listener
         button.setOnClickListener(v -> {
             String u_name; //String username
@@ -53,16 +57,13 @@ public class LogInActivity extends AppCompatActivity {
             //Ensure no empty box
             if (!u_name.isEmpty() && !pw.isEmpty()) {
                 //Create HTTP query and JWT access token
-
-
-                //Move to MainActivity
-                Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                intent.putExtra("username", u_name);
-                intent.putExtra("password", pw);
-                startActivity(intent);
+                presenter.login(u_name, pw);
             }
         });
+    }
 
-
+    public void movetoMain() {
+        Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

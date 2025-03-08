@@ -1,12 +1,17 @@
 package com.example.coffee_order_app.Model;
 
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface ApiService {
+
+    @POST("login.php")
+        // Ensure this matches your PHP script's endpoint
+    Call<LogInResponse> login(@Body LogInRequest request);
     @GET("TableOrder.php")
         // API Endpoint
     Call<List<TableOrderDTO>> getAllTables();
@@ -15,8 +20,5 @@ public interface ApiService {
         // API Endpoint
     Call<Table> getTableById(int tableId);
 
-    @GET("get_ip.php")
-        // API lay IP dong từ PHP
-    Call<Map<String, String>> getServerIP();
 }
 
