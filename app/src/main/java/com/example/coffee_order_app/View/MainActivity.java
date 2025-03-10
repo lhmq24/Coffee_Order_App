@@ -2,6 +2,8 @@ package com.example.coffee_order_app.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffee_order_app.Adapter.MainActivityAdapter;
+import com.example.coffee_order_app.Interface.MainActivityInterface;
 import com.example.coffee_order_app.Model.TableOrderDTO;
 import com.example.coffee_order_app.Presenter.MainPresenter;
 import com.example.coffee_order_app.R;
@@ -26,13 +29,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityInterface {
 
     private Toolbar toolbar;
     private GridView tables;
     private List<TableOrderDTO> tableList;
     private MainActivityAdapter adapter;
     private MainPresenter presenter;
+    private static final int REFRESH_INTERVAL = 5000; // 5 seconds
+    private Handler handler = new Handler();
+    private Runnable refreshRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Fetch tables using the presenter
         presenter.getAllTables();
+        // Set up periodic refresh of tables
+        startPeriodicRefresh();
 
 
         // Click event to open TableActivity
@@ -74,17 +82,34 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Start periodic refresh using Handler and Runnable
+    private void startPeriodicRefresh() {
+        refreshRunnable = new Runnable() {
+            @Override
+            public void run() {
+                presenter.getAllTables(); // Fetch tables periodically
+                handler.postDelayed(this, REFRESH_INTERVAL); // Re-run after delay
+            }
+        };
+        handler.post(refreshRunnable); // Initial trigger
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove the periodic refresh when the activity is destroyed to avoid memory leaks
+        handler.removeCallbacks(refreshRunnable);
+    }
+
     // Method to receive table list from presenter
     public void showTables(List<TableOrderDTO> tablesList) {
         tableList.clear();
-        if (tablesList != null) {
-            tableList.addAll(tablesList);
-        }
+        tableList.addAll(tablesList);
         adapter.notifyDataSetChanged();
     }
 
     public void showError(String message) {
-        System.out.println("Error: " + message);
+        Log.d("Main Error", "Loading Error: " + message);
     }
 
     @Override

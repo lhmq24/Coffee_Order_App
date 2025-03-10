@@ -1,4 +1,4 @@
-package com.example.coffee_order_app.Model;
+package com.example.coffee_order_app.Model.API;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,6 +1,5 @@
 package com.example.coffee_order_app.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,17 @@ import android.widget.TextView;
 
 import com.example.coffee_order_app.Model.Beverage;
 import com.example.coffee_order_app.R;
+import com.example.coffee_order_app.View.TableActivity;
 
 import java.util.List;
 
-public class TableActivityAdapter extends BaseAdapter {
-    private Context activity;
+public class TableBeveragesAdapter extends BaseAdapter {
+    private TableActivity view;
     private List<Beverage> BeverageList;
 
-    public TableActivityAdapter(Context context, List<Beverage> list) {
-        activity = context;
-        BeverageList = list;
+    public TableBeveragesAdapter(TableActivity context, List<Beverage> list) {
+        this.view = context;
+        this.BeverageList = list;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TableActivityAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(activity).inflate(R.layout.bev_item, parent, false);
+            convertView = LayoutInflater.from(view).inflate(R.layout.bev_item, parent, false);
         }
 
         Beverage bev = BeverageList.get(position);
@@ -50,8 +50,8 @@ public class TableActivityAdapter extends BaseAdapter {
         TextView bevPrice = convertView.findViewById(R.id.bev_price);
 
 
-        bevName.setText(activity.getString(R.string.beverage_name, bev.getName()));
-//        bevName.setText(activity.getString(R.string.beverage_price, ));
+        bevName.setText(view.getString(R.string.beverage_name, bev.getName()));
+//        bevName.setText(view.getString(R.string.beverage_price, ));
 
         return convertView;
     }

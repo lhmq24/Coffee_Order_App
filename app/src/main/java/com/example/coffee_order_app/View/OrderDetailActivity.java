@@ -23,7 +23,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-//        setContentView(R.layout.activity_receipt_detail);
+        setContentView(R.layout.activity_order_detail);
 
         //Add toolbar
         toolbar = findViewById(R.id.toolbar);

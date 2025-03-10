@@ -2,8 +2,8 @@ package com.example.coffee_order_app.Presenter;
 
 import android.util.Log;
 
-import com.example.coffee_order_app.Model.ApiClient;
-import com.example.coffee_order_app.Model.ApiService;
+import com.example.coffee_order_app.Model.API.ApiClient;
+import com.example.coffee_order_app.Model.API.ApiService;
 import com.example.coffee_order_app.Model.LogInRequest;
 import com.example.coffee_order_app.Model.LogInResponse;
 import com.example.coffee_order_app.View.LogInActivity;
@@ -32,8 +32,7 @@ public class LogInPresenter {
                     if (response.isSuccessful() && response.body() != null) {
                         LogInResponse LogInResponse = response.body();
                         if (LogInResponse.isSuccess()) {
-                            Log.d("Login", "Access Token: " + LogInResponse.getAccessToken());
-                            Log.d("Login", "Refresh Token: " + LogInResponse.getRefreshToken());
+                            Log.d("Login", "Log In success");
                             activity.movetoMain();
                         } else {
                             Log.e("Login", "Error: " + LogInResponse.getMessage());

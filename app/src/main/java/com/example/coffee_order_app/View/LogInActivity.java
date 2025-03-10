@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,21 +47,27 @@ public class LogInActivity extends AppCompatActivity {
 
         //Add listener
         button.setOnClickListener(v -> {
-            String u_name; //String username
-            String pw; //String password
-            try {
-                u_name = username.getText().toString();
-                pw = password.getText().toString();
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(e);
-            }
             //Ensure no empty box
-            if (!u_name.isEmpty() && !pw.isEmpty()) {
-                //Create HTTP query and JWT access token
+            if (!isFieldEmpty()) {
+                String u_name; //String username
+                String pw; //String password
+                try {
+                    u_name = username.getText().toString().trim();
+                    pw = password.getText().toString().trim();
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException(e);
+                }
                 presenter.login(u_name, pw);
+            } else {
+                Toast.makeText(LogInActivity.this, "Please complete all the fields", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private boolean isFieldEmpty() {
+        return username.getText().toString().trim().isEmpty() || password.getText().toString().trim().isEmpty();
+    }
+
 
     public void movetoMain() {
         Intent intent = new Intent(LogInActivity.this, MainActivity.class);
