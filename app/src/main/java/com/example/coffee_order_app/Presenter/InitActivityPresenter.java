@@ -7,10 +7,13 @@ import com.example.coffee_order_app.Interface.InitActivityInterface;
 import com.example.coffee_order_app.Interface.TokenExpirationCallback;
 import com.example.coffee_order_app.Model.API.ApiClient;
 import com.example.coffee_order_app.Model.API.ApiService;
+import com.example.coffee_order_app.Model.Request.RefreshRequest;
 import com.example.coffee_order_app.Model.Request.ValidateRequest;
-import com.example.coffee_order_app.Model.Response.LogInResponse;
+import com.example.coffee_order_app.Model.Response.RefreshResponse;
 import com.example.coffee_order_app.Model.Response.ValidateResponse;
 import com.example.coffee_order_app.Model.TokenManager;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,10 +54,13 @@ public class InitActivityPresenter {
             @Override
             public void onResponse(Call<ValidateResponse> call, Response<ValidateResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String status = response.body().getStatus();
-                    boolean isExpired = !"Success".equals(status); // "Success" means token is valid
+                    Log.d("Init presenter", "Access Token status: " + response.body().getStatus());
+                    boolean isExpired = !response.body().getStatus();
+                    if (isExpired) {
+                        Log.d("Init presenter", "Token is invalid");
+                    } else Log.d("Init presenter", "Token is valid");
                     callback.onTokenValidationResult(isExpired); // Pass result back via callback
-                    Log.d("Init presenter", "Token is valid");
+
                 } else {
                     callback.onTokenValidationResult(true); // If error in server response, treat token as expired
                     Log.d("Validate Token", "Server Error");
@@ -70,25 +76,40 @@ public class InitActivityPresenter {
     }
 
     // Method to refresh the token (use API to refresh)
-    public void refreshToken() {
-        String refreshToken = tokenManager.getRefreshToken();
-        if (refreshToken != null) {
+    public void refresh_token() {
+        RefreshRequest refresh_token = new RefreshRequest(tokenManager.getRefreshToken());
+        Log.d("Init presenter", "Refresh token: " + refresh_token.getRefreshToken());
+        if (refresh_token != null) {
             // Make the API call to refresh the token
-            apiService.refreshToken(refreshToken).enqueue(new Callback<LogInResponse>() {
+            apiService.refresh_token(refresh_token).enqueue(new Callback<RefreshResponse>() {
                 @Override
-                public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {
+                public void onResponse(Call<RefreshResponse> call, Response<RefreshResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         String newAccessToken = response.body().getAccessToken();
-                        tokenManager.clearAccessToken();
-                        tokenManager.saveAccessToken(newAccessToken);
-                        view.moveToMain();
+                        if (newAccessToken != null && !newAccessToken.isEmpty()) {
+                            Log.d("Init presenter", "New access token: " + newAccessToken);
+                            tokenManager.clearAccessToken();
+                            tokenManager.saveAccessToken(newAccessToken);
+                            view.moveToMain();
+                        } else {
+                            Log.e("Init presenter", "Response does not contain a new access token");
+                            tokenManager.clearRefreshToken();
+                            view.moveToLogIn();
+                        }
                     } else {
+                        Log.e("Init presenter", "Failed to refresh token. Code: " + response.code());
+                        try {
+                            Log.e("Init presenter", "Error body: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            Log.e("Init presenter", e.getMessage());
+                        }
+                        tokenManager.clearRefreshToken();
                         view.moveToLogIn();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<LogInResponse> call, Throwable t) {
+                public void onFailure(Call<RefreshResponse> call, Throwable t) {
                     view.moveToLogIn();
                 }
             });

@@ -23,7 +23,7 @@ public class InitActivity extends AppCompatActivity implements InitActivityInter
 
         // Check if there's an access token
         String accessToken = tokenManager.getAccessToken();
-        Log.d("Init", "Access Token: " + accessToken);
+        Log.d("Init activity", "Access Token: " + accessToken);
         if (accessToken != null && !accessToken.isEmpty()) {
             // Check if the token is expired asynchronously
             presenter.checkTokenExpiration(new TokenExpirationCallback() {
@@ -31,19 +31,19 @@ public class InitActivity extends AppCompatActivity implements InitActivityInter
                 public void onTokenValidationResult(boolean isExpired) {
                     if (isExpired) {
                         // Token is expired or invalid, handle the refresh token or login
-                        presenter.refreshToken();
-                        Log.d("Init", "refresh token");
+                        presenter.refresh_token();
+                        Log.d("Init activity", "refresh the token");
                     } else {
                         // Token is valid, move to main activity
                         moveToMain();
-                        Log.d("Init", "Move to Main");
+                        Log.d("Init activity", "Token is valid. Move to Main");
                     }
                 }
             });
         } else {
             // No access token, go to LoginActivity
             moveToLogIn();
-            Log.d("Init", "Move to Log In");
+            Log.d("Init activity", "Move to Log In");
         }
     }
 

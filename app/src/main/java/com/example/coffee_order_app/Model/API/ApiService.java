@@ -4,8 +4,10 @@ import com.example.coffee_order_app.Model.Beverage;
 import com.example.coffee_order_app.Model.Order;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 import com.example.coffee_order_app.Model.Request.LogInRequest;
+import com.example.coffee_order_app.Model.Request.RefreshRequest;
 import com.example.coffee_order_app.Model.Request.ValidateRequest;
 import com.example.coffee_order_app.Model.Response.LogInResponse;
+import com.example.coffee_order_app.Model.Response.RefreshResponse;
 import com.example.coffee_order_app.Model.Response.ValidateResponse;
 import com.example.coffee_order_app.Model.TableOrderDTO;
 
@@ -36,7 +38,7 @@ public interface ApiService {
     Call<Order> getOrder(@Body int orderId);
 
     @POST("auth/refresh.php")
-    Call<LogInResponse> refreshToken(@Body String refreshToken);
+    Call<RefreshResponse> refresh_token(@Body RefreshRequest request);
 
     @POST("auth/validate_token.php")
     Call<ValidateResponse> isTokenExpired(@Body ValidateRequest request);

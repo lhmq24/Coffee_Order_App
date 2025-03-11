@@ -1,17 +1,17 @@
 package com.example.coffee_order_app.Model.Response;
 
 public class ValidateResponse {
-    String status;
+    Boolean status;
     String message;
 
-    public ValidateResponse(String status, String message) {
+    public ValidateResponse(Boolean status, String message) {
         this.status = status;
         this.message = message;
     }
 
     //Getter
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 

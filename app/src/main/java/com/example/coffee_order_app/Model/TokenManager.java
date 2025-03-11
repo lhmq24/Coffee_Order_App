@@ -2,6 +2,7 @@ package com.example.coffee_order_app.Model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class TokenManager {
     private final SharedPreferences sharedPreferences;
@@ -27,7 +28,9 @@ public class TokenManager {
     }
 
     public String getRefreshToken() {
-        return sharedPreferences.getString("refresh_token", null);
+        String token = sharedPreferences.getString("refresh_token", null);
+        Log.d("TokenManager", "Retrieved refresh token: " + (token != null ? token : "NULL"));
+        return token;
     }
 
     public void clearAccessToken() {
