@@ -1,4 +1,4 @@
-package com.example.coffee_order_app.Model;
+package com.example.coffee_order_app.Model.Request;
 
 public class LogInRequest {
     private String username;

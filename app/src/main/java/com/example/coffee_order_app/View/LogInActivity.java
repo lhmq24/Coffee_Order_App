@@ -1,5 +1,6 @@
 package com.example.coffee_order_app.View;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -14,10 +15,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.coffee_order_app.Interface.LogInActivityInterface;
 import com.example.coffee_order_app.Presenter.LogInPresenter;
 import com.example.coffee_order_app.R;
 
-public class LogInActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity implements LogInActivityInterface {
     private TextView LogInLabel;
     private EditText username;
     private Button button;
@@ -68,9 +70,13 @@ public class LogInActivity extends AppCompatActivity {
         return username.getText().toString().trim().isEmpty() || password.getText().toString().trim().isEmpty();
     }
 
-
     public void movetoMain() {
         Intent intent = new Intent(LogInActivity.this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public Context getContext() {
+        return LogInActivity.this;
     }
 }

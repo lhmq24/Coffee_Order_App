@@ -2,11 +2,12 @@ package com.example.coffee_order_app.Presenter;
 
 import android.util.Log;
 
+import com.example.coffee_order_app.Interface.LogInActivityInterface;
 import com.example.coffee_order_app.Model.API.ApiClient;
 import com.example.coffee_order_app.Model.API.ApiService;
-import com.example.coffee_order_app.Model.LogInRequest;
-import com.example.coffee_order_app.Model.LogInResponse;
-import com.example.coffee_order_app.View.LogInActivity;
+import com.example.coffee_order_app.Model.Request.LogInRequest;
+import com.example.coffee_order_app.Model.Response.LogInResponse;
+import com.example.coffee_order_app.Model.TokenManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,11 +15,13 @@ import retrofit2.Response;
 
 public class LogInPresenter {
     private final ApiService apiService;
-    private LogInActivity activity;
+    private final TokenManager token_manager;
+    private LogInActivityInterface view;
 
-    public LogInPresenter(LogInActivity activity) {
+    public LogInPresenter(LogInActivityInterface view) {
         apiService = ApiClient.getClient().create(ApiService.class);
-        this.activity = activity;
+        this.view = view;
+        token_manager = new TokenManager(view.getContext());
     }
 
     public void login(String username, String password) {
@@ -33,7 +36,14 @@ public class LogInPresenter {
                         LogInResponse LogInResponse = response.body();
                         if (LogInResponse.isSuccess()) {
                             Log.d("Login", "Log In success");
-                            activity.movetoMain();
+                            //Saving token
+                            String access_token = response.body().getAccessToken();
+                            String refresh_token = response.body().getRefreshToken();
+                            Log.d("Login", "Access Token: " + access_token);
+                            Log.d("Login", "Refresh Token: " + refresh_token);
+                            token_manager.saveAccessToken(access_token);
+                            token_manager.saveRefreshToken(refresh_token);
+                            view.movetoMain();
                         } else {
                             Log.e("Login", "Error: " + LogInResponse.getMessage());
                         }

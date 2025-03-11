@@ -1,4 +1,4 @@
-package com.example.coffee_order_app.Model;
+package com.example.coffee_order_app.Model.Response;
 
 public class LogInResponse {
     private boolean success;
