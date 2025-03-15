@@ -16,6 +16,7 @@ import com.example.coffee_order_app.Adapter.OrderHistoryActivityAdapter;
 import com.example.coffee_order_app.Model.Order;
 import com.example.coffee_order_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +24,6 @@ public class OrderHistoryActivity extends AppCompatActivity {
     private ListView view;
     private OrderHistoryActivityAdapter adapter;
     private List<Order> OrderList;
-//    private DatabaseHelper dbHelper;
 
 
 
@@ -50,6 +50,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
 
         //Add adapter to tables grid view
+        OrderList = new ArrayList<>();
         adapter = new OrderHistoryActivityAdapter(this, OrderList);
         //Call getCount() for number of element and getView() for each GridView element
         view.setAdapter(adapter);

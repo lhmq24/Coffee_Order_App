@@ -30,11 +30,9 @@ public class InitActivity extends AppCompatActivity implements InitActivityInter
                 @Override
                 public void onTokenValidationResult(boolean isExpired) {
                     if (isExpired) {
-                        // Token is expired or invalid, handle the refresh token or login
+                        Log.d("Init activity", "Token expired, refreshing...");
                         presenter.refresh_token();
-                        Log.d("Init activity", "refresh the token");
                     } else {
-                        // Token is valid, move to main activity
                         moveToMain();
                         Log.d("Init activity", "Token is valid. Move to Main");
                     }

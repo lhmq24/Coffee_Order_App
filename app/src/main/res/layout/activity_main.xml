@@ -22,12 +22,12 @@
         <GridView
             android:id="@+id/table_grid_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:horizontalSpacing="8dp"
             android:numColumns="2"
             android:padding="8dp"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="8dp" />
+            android:verticalSpacing="28dp" />
 
     </LinearLayout>
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 import com.example.coffee_order_app.Presenter.TablePresenter;
 import com.example.coffee_order_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,6 +73,7 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
         button = findViewById(R.id.markAsPaidButton);
 
         //Set beverageAdapter
+        matchedBeveragesList = new ArrayList<>();
         beverageAdapter = new TableBeveragesAdapter(this, matchedBeveragesList);
         matchedBeveragesView.setAdapter(beverageAdapter);
 
@@ -78,9 +81,11 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
 
         //Set presenter
         presenter = new TablePresenter(TableActivity.this);
-        presenter.showOrderItems();
+        presenter.showOrderItems(getIntent().getIntExtra("tableNumber", -1));
 
         // Add TextWatcher to search box
+        //Show all beverages when not input
+        presenter.queryBeverages();
         search_box.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
@@ -103,41 +108,71 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
     }
 
     public void showMatchedBeverages(List<Beverage> beverages) {
+        if (beverages == null || beverages.isEmpty()) {
+            Log.d("TableActivity", "No beverages returned!");
+            return;
+        }
+
+        Log.d("TableActivity", "Number of beverages: " + beverages.size());
+
         matchedBeveragesList.clear();
         matchedBeveragesList.addAll(beverages);
         beverageAdapter.notifyDataSetChanged();
     }
+
 
     public void showError(String error) {
         Log.d("Table Error", "Loading Error: " + error);
     }
 
     public void addTableRows(List<OrderItemBeverageDTO> items) {
-        TextView bev_name = findViewById(R.id.bev_name);
-        TextView bev_price = findViewById(R.id.bev_price);
-        TextView bev_quantity = findViewById(R.id.bev_quantity);
-        TextView bev_status = findViewById(R.id.bev_status);
-        TextView total_amount = findViewById(R.id.totalPrice);
+        // Preserve headers by only removing rows after the first row
+        int childCount = ItemTable.getChildCount();
+        if (childCount > 1) {
+            ItemTable.removeViews(1, childCount - 1); // Keep the first row (header)
+        }
+
+        //Total amount
+        float total_amount = 0;
 
         for (OrderItemBeverageDTO item : items) {
-            // Create a new TableRow
+            total_amount += item.getOrderItem().getItemPrice() * item.getOrderItem().getItemQuantity();
             TableRow tableRow = new TableRow(this);
+
+            TextView bev_name = new TextView(this);
+            TextView bev_price = new TextView(this);
+            TextView bev_quantity = new TextView(this);
+            TextView bev_status = new TextView(this);
+
+            // Set text values
             bev_name.setText(item.getBeverage().getName());
             bev_price.setText(getString(R.string.Order_item_price, item.getOrderItem().getItemPrice()));
-            bev_quantity.setText(getString(R.string.Order_quantity, item.getOrderItem().getItemPrice()));
-            String status = (item.getOrderItem().getItemStatus() == 1 ? "Served" : "Not served");
-            bev_status.setText(status);
+            bev_quantity.setText(getString(R.string.Order_quantity, item.getOrderItem().getItemQuantity()));
+            bev_status.setText(item.getOrderItem().getItemStatus() == 1 ? "Served" : "Not served");
 
-            OrderID = item.getOrderItem().getOrderId();
+            // Set padding for separation in dp
+            int padding = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()
+            );
+            bev_name.setPadding(padding, 0, padding, 0);
+            bev_price.setPadding(padding, 0, padding, 0);
+            bev_quantity.setPadding(padding, 0, padding, 0);
+            bev_status.setPadding(padding, 0, padding, 0);
 
+            // Add views to row
             tableRow.addView(bev_name);
             tableRow.addView(bev_price);
             tableRow.addView(bev_quantity);
             tableRow.addView(bev_status);
+
+            // Add row to table
+            ItemTable.addView(tableRow);
         }
 
-        presenter.showTotalAmount(OrderID);
+        TextView totalAmount = findViewById(R.id.totalPrice);
+        totalAmount.setText(getString(R.string.Order_total_price, total_amount));
     }
+
 
     public void showTotalAmount(Order order) {
         TextView total_amount = findViewById(R.id.totalPrice);

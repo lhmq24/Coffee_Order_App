@@ -31,7 +31,7 @@
         <ListView
             android:id="@+id/matchedBeveragesView"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="200dp" />
 
         <android.widget.TableLayout
             android:id="@+id/orderDetailTable"
@@ -51,25 +51,28 @@
                     android:fontFamily="sans-serif-medium"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
-                    android:text="@string/Order_beverage" />
+                    android:text="@string/Order_beverage_title" />
 
                 <TextView
                     android:id="@+id/bev_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Order_item_price" />
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/Order_item_price_title" />
 
                 <TextView
                     android:id="@+id/bev_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Order_quantity" />
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/Order_quantity_title" />
 
                 <TextView
                     android:id="@+id/bev_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Order_status" />
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/Order_status_title" />
             </TableRow>
 
             <!-- Dynamic rows will be added here for each order item -->

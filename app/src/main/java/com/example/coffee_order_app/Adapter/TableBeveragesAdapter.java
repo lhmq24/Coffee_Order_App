@@ -1,5 +1,6 @@
 package com.example.coffee_order_app.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +25,17 @@ public class TableBeveragesAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return BeverageList != null ? BeverageList.size() : 0;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return BeverageList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -52,7 +53,9 @@ public class TableBeveragesAdapter extends BaseAdapter {
 
         bevName.setText(view.getString(R.string.beverage_name, bev.getName()));
 //        bevName.setText(view.getString(R.string.beverage_price, ));
-
+        if (BeverageList == null || BeverageList.isEmpty()) {
+            Log.d("Table beverage adapter", "Beverage List is null or empty, cannot convert the View");
+        }
         return convertView;
     }
 }

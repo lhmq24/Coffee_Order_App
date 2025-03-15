@@ -4,4 +4,5 @@ public interface InitActivityInterface {
     void moveToMain();
 
     void moveToLogIn();
+
 }

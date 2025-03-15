@@ -4,8 +4,6 @@ import com.example.coffee_order_app.Model.Beverage;
 import com.example.coffee_order_app.Model.Order;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 import com.example.coffee_order_app.Model.Request.LogInRequest;
-import com.example.coffee_order_app.Model.Request.RefreshRequest;
-import com.example.coffee_order_app.Model.Request.ValidateRequest;
 import com.example.coffee_order_app.Model.Response.LogInResponse;
 import com.example.coffee_order_app.Model.Response.RefreshResponse;
 import com.example.coffee_order_app.Model.Response.ValidateResponse;
@@ -16,7 +14,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -28,19 +29,24 @@ public interface ApiService {
         // API Endpoint
     Call<List<TableOrderDTO>> getAllTables();
 
-    @POST("data/Beverage.php")
-    Call<List<Beverage>> queryBeverages(@Body String bev_name);
+    @GET("data/Beverages.php")
+    Call<List<Beverage>> queryBeverages(@Query("bev_name") String bev_name);
+
+    @GET("data/Beverages.php")
+    Call<List<Beverage>> queryBeverages();
 
     @GET("data/OrderItemBeverage.php")
-    Call<List<OrderItemBeverageDTO>> getOrderItems();
+    Call<List<OrderItemBeverageDTO>> getOrderItems(@Query("tbl_id") int tableId);
 
     @POST("data/Order.php")
     Call<Order> getOrder(@Body int orderId);
 
     @POST("auth/refresh.php")
-    Call<RefreshResponse> refresh_token(@Body RefreshRequest request);
+    Call<RefreshResponse> refreshToken(@Header("Authorization") String authHeader);
 
     @POST("auth/validate_token.php")
-    Call<ValidateResponse> isTokenExpired(@Body ValidateRequest request);
+    @Headers("Content-Type: application/json")
+    Call<ValidateResponse> isTokenExpired(@Header("Authorization") String token);
+
 }
 
