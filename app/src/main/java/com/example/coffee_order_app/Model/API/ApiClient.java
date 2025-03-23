@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static String BASE_URL = "http://192.168.1.10/API/"; // Giá trị mặc định
+    private static String BASE_URL = "http://192.168.1.15/API/"; // Giá trị mặc định
     private static Retrofit retrofit;
 
     public static void init(ApiService apiService, Runnable callback) {
@@ -21,6 +21,10 @@ public class ApiClient {
 
     public static Retrofit getClient() {
         return retrofit != null ? retrofit : buildRetrofit();
+    }
+
+    public static String getURL() {
+        return BASE_URL;
     }
 }
 

@@ -32,6 +32,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    tasks.withType<JavaCompile>().configureEach {
+        options.compilerArgs.add("-Xlint:deprecation")
+    }
 
 //    defaultConfig {   //For SQLite Room Annotation
 //        javaCompileOptions {
@@ -52,6 +55,7 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.glide)
 //    implementation(libs.room.common)
 //    implementation(libs.room.runtime)
     testImplementation(libs.junit)

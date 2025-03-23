@@ -8,4 +8,7 @@ public interface MainActivityInterface {
     void showTables(List<TableOrderDTO> tableList);
 
     void showError(String errorMessage);
+
+    void updateTableList(List<TableOrderDTO> tableList);
+
 }

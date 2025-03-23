@@ -73,8 +73,8 @@ public class TablePresenter {
     }
 
 
-    public void showOrderItems(int tableID) {
-        Call<List<OrderItemBeverageDTO>> call = apiService.getOrderItems(tableID);
+    public void showOrderItems(int floor_number, int tableNumber) {
+        Call<List<OrderItemBeverageDTO>> call = apiService.getOrderItems(floor_number, tableNumber);
         call.enqueue(new Callback<>() {
             @Override
             @EverythingIsNonNull

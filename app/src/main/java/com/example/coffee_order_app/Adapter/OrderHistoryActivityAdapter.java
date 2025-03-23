@@ -1,7 +1,7 @@
 package com.example.coffee_order_app.Adapter;
 
 import android.content.Context;
-import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,30 +9,30 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.coffee_order_app.Model.Order;
+import com.bumptech.glide.Glide;
+import com.example.coffee_order_app.Model.API.ApiClient;
+import com.example.coffee_order_app.Model.TableOrderDTO;
 import com.example.coffee_order_app.R;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class OrderHistoryActivityAdapter extends BaseAdapter {
     private final Context context;
-    private List<Order> OrderList;
+    private List<TableOrderDTO> HistoryList;
 
-    public OrderHistoryActivityAdapter(Context context, List<Order> OrderList) {
+    public OrderHistoryActivityAdapter(Context context, List<TableOrderDTO> historyList) {
         this.context = context;
-        this.OrderList = OrderList;
+        HistoryList = historyList;
     }
 
     @Override
     public int getCount() {
-        return OrderList.size();
+        return HistoryList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return OrderList.get(position);
+        return HistoryList.get(position);
     }
 
     @Override
@@ -47,27 +47,21 @@ public class OrderHistoryActivityAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.history_item, parent, false);
         }
 
-        Order Order = OrderList.get(position);
+        TableOrderDTO TableOrderDTO = HistoryList.get(position);
 
         ImageView tableImage = convertView.findViewById(R.id.tableImage);
         TextView tableNumber = convertView.findViewById(R.id.history_table_number);
         TextView tableAmount = convertView.findViewById(R.id.history_table_amount);
+        TextView paidTime = convertView.findViewById(R.id.history_paid_time);
 
         ;
-        //Get table ID for table name, must be change
-        tableNumber.setText(context.getString(R.string.table_number, Order.getTableId()));
-        tableAmount.setText(context.getString(R.string.table_amount, Order.getTotalPrice()));
+        //Set data for View
+        Log.d("Order History Adapter", "image uri: " + ApiClient.getURL() + TableOrderDTO.getTable().getTableImage());
+        Glide.with(context).load(ApiClient.getURL() + TableOrderDTO.getTable().getTableImage()).into(tableImage);
+        tableNumber.setText(context.getString(R.string.table_number, TableOrderDTO.getTable().getTableNumber()));
+        tableAmount.setText(context.getString(R.string.table_amount, TableOrderDTO.getOrder().getTotalPrice()));
+        // Convert timestamp
+        paidTime.setText(TableOrderDTO.getOrder().getPaidAt());
         return convertView;
-    }
-
-    public String convertTimestampToDate(long timestamp) {
-        // Define date format
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
-
-        // Convert timestamp to Date
-        Date date = new Date(timestamp);
-
-        // Format the date
-        return sdf.format(date);
     }
 }

@@ -18,43 +18,47 @@ public class Table {
     @SerializedName("tbl_status")
     private int status; // 0 = available, 1 = occupied
 
+    @SerializedName("tbl_image")
+    private String tableImage;
+
+
     // Constructor
-    public Table(int id, int floorNumber, int tableNumber, int capacity, int status) {
+    public Table(int id, int floorNumber, int tableNumber, int tableCapacity, int status, String tableImage) {
         this.id = id;
         this.floorNumber = floorNumber;
         this.tableNumber = tableNumber;
-        this.tableCapacity = capacity;
+        this.tableCapacity = tableCapacity;
         this.status = status;
+        this.tableImage = tableImage;
     }
 
     // Getter methods
+
+
     public int getId() {
         return id;
-    }
-
-    public int getTableCapacity() {
-        return tableCapacity;
-    }
-
-    public void setTableCapacity(int tableCapacity) {
-        this.tableCapacity = tableCapacity;
     }
 
     public int getTableNumber() {
         return tableNumber;
     }
 
+    public int getTableCapacity() {
+        return tableCapacity;
+    }
+
     public int getStatus() {
         return status;
     }
 
-    // Setter methods
-    public void setId(int id) {
-        this.id = id;
+    public String getTableImage() {
+        return tableImage;
     }
 
-    public int getFloorNumber() {
-        return floorNumber;
+    // Setter methods
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setFloorNumber(int floorNumber) {
@@ -65,7 +69,19 @@ public class Table {
         this.tableNumber = tableNumber;
     }
 
+    public void setTableImage(String tableImage) {
+        this.tableImage = tableImage;
+    }
+
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public void setTableCapacity(int tableCapacity) {
+        this.tableCapacity = tableCapacity;
+    }
+
+    public int getFloorNumber() {
+        return floorNumber;
     }
 }

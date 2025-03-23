@@ -2,6 +2,7 @@ package com.example.coffee_order_app.Adapter;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,31 +12,28 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.example.coffee_order_app.Model.API.ApiClient;
 import com.example.coffee_order_app.Model.TableOrderDTO;
 import com.example.coffee_order_app.R;
 
 import java.util.List;
-import java.util.Random;
+
 
 public class MainActivityAdapter extends BaseAdapter {
     private final Context context;
+    TextView tableCapacity;
     ImageView tableImage;
     TextView tableNumber;
+    private LayoutInflater inflater;
     TextView tableStatus;
     TextView tableAmount;
     private List<TableOrderDTO> tableList;
 
-    private int[] tableImages = {
-            R.drawable.table_img_1,
-            R.drawable.table_img_2,
-            R.drawable.table_img_3,
-            R.drawable.table_img_4,
-            R.drawable.table_img_5
-    };
-
     public MainActivityAdapter(Context context, List<TableOrderDTO> tableList) {
         this.context = context;
         this.tableList = tableList;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -55,38 +53,69 @@ public class MainActivityAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        long startTime = System.currentTimeMillis();
+
+        ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.table_item, parent, false);
+            holder = new ViewHolder();
+            holder.tableImage = convertView.findViewById(R.id.tableImage);
+            holder.tableNumber = convertView.findViewById(R.id.tableNumber);
+            holder.tableCapacity = convertView.findViewById(R.id.tableCapacity);
+            holder.tableStatus = convertView.findViewById(R.id.tableStatus);
+            holder.tableAmount = convertView.findViewById(R.id.tableAmount);
+            convertView.setTag(holder); // Lưu ViewHolder vào View
+        } else {
+            Log.d("AdapterDebug", "The View is reuse");
+            holder = (ViewHolder) convertView.getTag(); // Lấy lại ViewHolder đã lưu
         }
 
         TableOrderDTO table = tableList.get(position);
 
-        tableImage = convertView.findViewById(R.id.tableImage);
-        tableNumber = convertView.findViewById(R.id.tableNumber);
-        tableStatus = convertView.findViewById(R.id.tableStatus);
-        tableAmount = convertView.findViewById(R.id.tableAmount);
+        long inflateTime = System.currentTimeMillis();
 
-        //Random set table image
-        Random random = new Random();
-        for (int i = 0; i < 15; i++) {
-            int randomIndex = random.nextInt(tableImages.length); // Get a random index
-            tableImage.setImageResource(tableImages[randomIndex]); // Set random image
-        }
+        Glide.with(context)
+                .load(ApiClient.getURL() + table.getTable().getTableImage())
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.error)
+                .into(holder.tableImage);
 
-        tableNumber.setText(context.getString(R.string.table_number, table.getTable().getTableNumber()));
-        String status = table.getTable().getStatus() == 0 ? "Available" : "Not Available";
-        tableStatus.setText(context.getString(R.string.table_status, status));
-        tableAmount.setText(context.getString(R.string.table_amount, table.getOrder().getTotalPrice()));
+        long imageLoadTime = System.currentTimeMillis();
 
-        // Change color based on table status
+        holder.tableNumber.setText(context.getString(R.string.table_number, table.getTable().getTableNumber()));
+        holder.tableCapacity.setText(context.getString(R.string.table_capacity, table.getTable().getTableCapacity()));
+
         if (table.getTable().getStatus() == 1) {
-            //Table is not available
-            tableStatus.setTextColor(ContextCompat.getColor(context, R.color.red));
+            holder.tableStatus.setText(context.getString(R.string.table_status, "Available"));
+            holder.tableStatus.setTextColor(ContextCompat.getColor(context, R.color.green));
+            holder.tableAmount.setText(context.getString(R.string.table_amount, 0.0f));
         } else {
-            //Table is available
-            tableStatus.setTextColor(ContextCompat.getColor(context, R.color.green));
+            holder.tableStatus.setText(context.getString(R.string.table_status, "Not Available"));
+            holder.tableStatus.setTextColor(ContextCompat.getColor(context, R.color.red));
+
+            if (table.getOrder() != null) {
+                holder.tableAmount.setText(context.getString(R.string.table_amount, table.getOrder().getTotalPrice()));
+            } else {
+                holder.tableAmount.setText(context.getString(R.string.table_amount, 0.0f));
+            }
         }
+
+        long endTime = System.currentTimeMillis();
+
+        Log.d("AdapterDebug", "Inflate time: " + (inflateTime - startTime) + "ms, " +
+                "Image load time: " + (imageLoadTime - inflateTime) + "ms, " +
+                "Total time: " + (endTime - startTime) + "ms");
 
         return convertView;
     }
+
+    static class ViewHolder {
+        ImageView tableImage;
+        TextView tableNumber;
+        TextView tableCapacity;
+        TextView tableStatus;
+        TextView tableAmount;
+    }
 }
+
+

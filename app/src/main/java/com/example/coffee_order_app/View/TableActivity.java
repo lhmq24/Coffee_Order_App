@@ -77,11 +77,18 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
         beverageAdapter = new TableBeveragesAdapter(this, matchedBeveragesList);
         matchedBeveragesView.setAdapter(beverageAdapter);
 
+        matchedBeveragesView.setOnItemClickListener((parent, view, position, id) -> {
+            Beverage selectedBeverage = matchedBeveragesList.get(position);
+            //Add select beverage here
+
+
+        });
+
 
 
         //Set presenter
         presenter = new TablePresenter(TableActivity.this);
-        presenter.showOrderItems(getIntent().getIntExtra("tableNumber", -1));
+        presenter.showOrderItems(getIntent().getIntExtra("tableFloor", -1), getIntent().getIntExtra("tableNumber", -1));
 
         // Add TextWatcher to search box
         //Show all beverages when not input
@@ -144,6 +151,10 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
             TextView bev_quantity = new TextView(this);
             TextView bev_status = new TextView(this);
 
+            //Wrap the text in status
+            bev_status.setSingleLine(false); // Allow multiple lines
+            bev_status.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)); // Adjust weight
+
             // Set text values
             bev_name.setText(item.getBeverage().getName());
             bev_price.setText(getString(R.string.Order_item_price, item.getOrderItem().getItemPrice()));
@@ -154,10 +165,10 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
             int padding = (int) TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()
             );
-            bev_name.setPadding(padding, 0, padding, 0);
-            bev_price.setPadding(padding, 0, padding, 0);
-            bev_quantity.setPadding(padding, 0, padding, 0);
-            bev_status.setPadding(padding, 0, padding, 0);
+            bev_name.setPadding(padding, 5, padding, 0);
+            bev_price.setPadding(padding, 5, padding, 0);
+            bev_quantity.setPadding(padding, 5, padding, 0);
+            bev_status.setPadding(padding, 5, padding, 0);
 
             // Add views to row
             tableRow.addView(bev_name);

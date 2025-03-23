@@ -5,35 +5,31 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffee_order_app.Adapter.OrderHistoryActivityAdapter;
-import com.example.coffee_order_app.Model.Order;
+import com.example.coffee_order_app.Interface.HistoryActivityInterface;
+import com.example.coffee_order_app.Model.TableOrderDTO;
+import com.example.coffee_order_app.Presenter.HistoryPresenter;
 import com.example.coffee_order_app.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class OrderHistoryActivity extends AppCompatActivity {
-    private ListView view;
+public class OrderHistoryActivity extends AppCompatActivity implements HistoryActivityInterface {
+    private ListView listView;
     private OrderHistoryActivityAdapter adapter;
-    private List<Order> OrderList;
-
-
+    private List<TableOrderDTO> HistoryList;
+    private HistoryPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_order_history);
 
-        //Add toolbar
+        // Toolbar setup
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.go_back);
@@ -43,34 +39,29 @@ public class OrderHistoryActivity extends AppCompatActivity {
         title.setText(R.string.order_history);
         toolbar.setBackgroundResource(R.color.toolbar_color);
 
-        //Add view
-        view = findViewById(R.id.order_recycler_view);
+        // Initialize ListView
+        listView = findViewById(R.id.order_list_view);
+        HistoryList = new ArrayList<>();
+        adapter = new OrderHistoryActivityAdapter(this, HistoryList);
+        listView.setAdapter(adapter);
 
-        // Add tables (For testing UI, must load from a database)
+        // Initialize presenter
+        presenter = new HistoryPresenter(this);
+        presenter.getPaidOrders();
 
-
-        //Add adapter to tables grid view
-        OrderList = new ArrayList<>();
-        adapter = new OrderHistoryActivityAdapter(this, OrderList);
-        //Call getCount() for number of element and getView() for each GridView element
-        view.setAdapter(adapter);
-
-        // Click event to open OrderDetailActivity
-        view.setOnItemClickListener((parent, view, position, id) -> {
-            Order order = OrderList.get(position);
+        // Click event for order details
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            TableOrderDTO order = HistoryList.get(position);
             Intent intent = new Intent(OrderHistoryActivity.this, OrderDetailActivity.class);
-            intent.putExtra("tableNumber", order.getTableId());
+            intent.putExtra("tableNumber", order.getTable().getTableNumber());
             startActivity(intent);
-        });
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
         });
     }
 
-    public void showTables(List<Order> OrderList) {
-
+    @Override
+    public void showHistories(List<TableOrderDTO> orders) {
+        HistoryList.clear();
+        HistoryList.addAll(orders);
+        adapter.notifyDataSetChanged();
     }
 }

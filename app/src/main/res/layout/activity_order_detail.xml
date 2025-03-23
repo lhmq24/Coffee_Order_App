@@ -29,21 +29,25 @@
                     android:fontFamily="sans-serif-medium"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
+                    android:gravity="center_horizontal"
                     android:text="@string/Order_beverage" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:text="@string/Order_item_price" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:text="@string/Order_quantity" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:text="@string/Order_status" />
             </TableRow>
 

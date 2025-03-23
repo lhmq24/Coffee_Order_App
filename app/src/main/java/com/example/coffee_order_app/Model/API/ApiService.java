@@ -26,8 +26,10 @@ public interface ApiService {
     Call<LogInResponse> login(@Body LogInRequest request);
 
     @GET("data/TableOrder.php")
-        // API Endpoint
-    Call<List<TableOrderDTO>> getAllTables();
+    Call<List<TableOrderDTO>> getAllTables(@Query("status") int status);
+
+    @GET("data/TableOrder.php")
+    Call<List<TableOrderDTO>> getPaidOrders(@Query("status") int status);
 
     @GET("data/Beverages.php")
     Call<List<Beverage>> queryBeverages(@Query("bev_name") String bev_name);
@@ -36,7 +38,7 @@ public interface ApiService {
     Call<List<Beverage>> queryBeverages();
 
     @GET("data/OrderItemBeverage.php")
-    Call<List<OrderItemBeverageDTO>> getOrderItems(@Query("tbl_id") int tableId);
+    Call<List<OrderItemBeverageDTO>> getOrderItems(@Query("floor_number") int floor_number, @Query("tbl_number") int tableNumber);
 
     @POST("data/Order.php")
     Call<Order> getOrder(@Body int orderId);
