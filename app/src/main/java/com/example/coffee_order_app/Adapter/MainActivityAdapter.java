@@ -72,8 +72,6 @@ public class MainActivityAdapter extends BaseAdapter {
 
         TableOrderDTO table = tableList.get(position);
 
-        long inflateTime = System.currentTimeMillis();
-
         Glide.with(context)
                 .load(ApiClient.getURL() + table.getTable().getTableImage())
                 .placeholder(R.drawable.loading)
@@ -85,7 +83,7 @@ public class MainActivityAdapter extends BaseAdapter {
         holder.tableNumber.setText(context.getString(R.string.table_number, table.getTable().getTableNumber()));
         holder.tableCapacity.setText(context.getString(R.string.table_capacity, table.getTable().getTableCapacity()));
 
-        if (table.getTable().getStatus() == 1) {
+        if (table.getTable().getStatus() == 0) {
             holder.tableStatus.setText(context.getString(R.string.table_status, "Available"));
             holder.tableStatus.setTextColor(ContextCompat.getColor(context, R.color.green));
             holder.tableAmount.setText(context.getString(R.string.table_amount, 0.0f));
@@ -99,12 +97,6 @@ public class MainActivityAdapter extends BaseAdapter {
                 holder.tableAmount.setText(context.getString(R.string.table_amount, 0.0f));
             }
         }
-
-        long endTime = System.currentTimeMillis();
-
-        Log.d("AdapterDebug", "Inflate time: " + (inflateTime - startTime) + "ms, " +
-                "Image load time: " + (imageLoadTime - inflateTime) + "ms, " +
-                "Total time: " + (endTime - startTime) + "ms");
 
         return convertView;
     }

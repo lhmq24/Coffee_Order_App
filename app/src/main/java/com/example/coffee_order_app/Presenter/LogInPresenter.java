@@ -21,7 +21,7 @@ public class LogInPresenter {
     public LogInPresenter(LogInActivityInterface view) {
         apiService = ApiClient.getClient().create(ApiService.class);
         this.view = view;
-        token_manager = new TokenManager(view.getContext());
+        token_manager = TokenManager.getInstance(view.getContext());
     }
 
     public void login(String username, String password) {

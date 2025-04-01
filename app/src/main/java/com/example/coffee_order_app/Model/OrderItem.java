@@ -20,7 +20,7 @@ public class OrderItem {
     private float itemPrice;
 
     @SerializedName("item_note")
-    private int itemNote;
+    private String itemNote;
 
     @SerializedName("item_status")
     private int itemStatus;  // 0 = Not served (default), 1 = Served
@@ -28,9 +28,7 @@ public class OrderItem {
 
     // Constructor
 
-    public OrderItem(int itemId, int orderId, int beverageId,
-                     int itemQuantity, float itemPrice,
-                     int itemNote, int itemStatus) {
+    public OrderItem(int itemId, int orderId, int beverageId, int itemQuantity, float itemPrice, String itemNote, int itemStatus) {
         this.itemId = itemId;
         this.orderId = orderId;
         this.beverageId = beverageId;
@@ -40,8 +38,8 @@ public class OrderItem {
         this.itemStatus = itemStatus;
     }
 
-    // Getter methods
 
+    // Getter methods
 
     public int getItemId() {
         return itemId;
@@ -55,26 +53,26 @@ public class OrderItem {
         return beverageId;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
     public int getItemQuantity() {
         return itemQuantity;
-    }
-
-    public void setItemQuantity(int itemQuantity) {
-        this.itemQuantity = itemQuantity;
     }
 
     public float getItemPrice() {
         return itemPrice;
     }
 
+    public String getItemNote() {
+        return itemNote;
+    }
+
+    public void setItemNote(String itemNote) {
+        this.itemNote = itemNote;
+    }
+
     // Setter methods
 
-    public void setItemPrice(float itemPrice) {
-        this.itemPrice = itemPrice;
+    public int getItemStatus() {
+        return itemStatus;
     }
 
     public void setOrderId(int orderId) {
@@ -85,19 +83,20 @@ public class OrderItem {
         this.beverageId = beverageId;
     }
 
-    public int getItemNote() {
-        return itemNote;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
-    public void setItemNote(int itemNote) {
-        this.itemNote = itemNote;
+    public void setItemQuantity(int itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 
-    public int getItemStatus() {
-        return itemStatus;
+    public void setItemPrice(float itemPrice) {
+        this.itemPrice = itemPrice;
     }
 
     public void setItemStatus(int itemStatus) {
         this.itemStatus = itemStatus;
     }
+
 }

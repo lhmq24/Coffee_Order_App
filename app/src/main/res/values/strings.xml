@@ -10,14 +10,15 @@
     <string name="receipt_table_number">Table %d Receipt</string>
     <string name="search_box_hint">Search for beverages</string>
     <string name="Order_beverage_title">Beverage name</string>
-    <string name="Order_item_price_title">Price</string>
+    <string name="Order_item_price_title">Total Price</string>
     <string name="Order_quantity_title">Quantity</string>
     <string name="Order_status_title">Status</string>
     <string name="Order_beverage">%s</string>
     <string name="Order_item_price">%.0f VND</string>
+    <string name="Order_item_delete">Reduce / Delete</string>
     <string name="Order_quantity">%d</string>
     <string name="Order_status">%s</string>
-    <string name="Order_total_price">Total: %.0f VND</string>
+    <string name="Order_total_price">Total amount: %.0f VND</string>
     <string name="Order_button_text">Mark as Paid</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>

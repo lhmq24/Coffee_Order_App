@@ -11,10 +11,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,13 +24,14 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.coffee_order_app.Adapter.TableBeveragesAdapter;
 import com.example.coffee_order_app.Interface.TableActivityInterface;
 import com.example.coffee_order_app.Model.Beverage;
-import com.example.coffee_order_app.Model.Order;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 import com.example.coffee_order_app.Presenter.TablePresenter;
 import com.example.coffee_order_app.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class TableActivity extends AppCompatActivity implements TableActivityInterface {
@@ -41,7 +44,7 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
     private Button button;
     private TableBeveragesAdapter beverageAdapter;
     private TablePresenter presenter;
-    private int OrderID;
+    private Map<String, TableRow> existingRows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +82,12 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
 
         matchedBeveragesView.setOnItemClickListener((parent, view, position, id) -> {
             Beverage selectedBeverage = matchedBeveragesList.get(position);
-            //Add select beverage here
-
-
+            int floorNumber = getIntent().getIntExtra("tableFloor", -1);
+            int tableNumber = getIntent().getIntExtra("tableNumber", -1);
+            int bev_id = selectedBeverage.getId();
+            String bev_name = selectedBeverage.getName();
+            //Add select beverage
+            presenter.addOrderItem(floorNumber, tableNumber, bev_id, bev_name);
         });
 
 
@@ -112,6 +118,23 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
             public void afterTextChanged(Editable editable) {
             }
         });
+
+        // Add listener to Paid button
+        button.setOnClickListener(c -> {
+            // Create request to pay the bill
+            int floorNumber = getIntent().getIntExtra("tableFloor", -1);
+            int tableNumber = getIntent().getIntExtra("tableNumber", -1);
+            presenter.payOrder(floorNumber, tableNumber, success -> {
+                if (!success) {
+                    Log.d("Payment", "Pay order failed");
+                    Toast.makeText(this, "Server error. Please try again!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d("Payment", "Pay order successfully");
+                    Toast.makeText(this, "Pay successfully!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        });
     }
 
     public void showMatchedBeverages(List<Beverage> beverages) {
@@ -133,62 +156,165 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
     }
 
     public void addTableRows(List<OrderItemBeverageDTO> items) {
-        // Preserve headers by only removing rows after the first row
-        int childCount = ItemTable.getChildCount();
-        if (childCount > 1) {
-            ItemTable.removeViews(1, childCount - 1); // Keep the first row (header)
+        TableLayout itemTable = findViewById(R.id.orderDetailTable);
+        if (existingRows == null) {
+            existingRows = new HashMap<>();
         }
 
-        //Total amount
-        float total_amount = 0;
+        // Store existing rows
+        for (int i = 0; i < itemTable.getChildCount(); i++) {
+            TableRow row = (TableRow) itemTable.getChildAt(i);
+            TextView nameView = (TextView) row.getChildAt(0);
+            Log.d("Order Item", "put bev name to Map: " + nameView.getText().toString());
+            existingRows.put(nameView.getText().toString(), row);
+        }
+        float total_price = 0;
 
         for (OrderItemBeverageDTO item : items) {
-            total_amount += item.getOrderItem().getItemPrice() * item.getOrderItem().getItemQuantity();
-            TableRow tableRow = new TableRow(this);
+            String bevName = item.getBeverage().getName();
+            int quantity = item.getOrderItem().getItemQuantity();
+            float price = item.getOrderItem().getItemPrice();
 
-            TextView bev_name = new TextView(this);
-            TextView bev_price = new TextView(this);
-            TextView bev_quantity = new TextView(this);
-            TextView bev_status = new TextView(this);
+            Log.d("Order Item", "bevName: " + bevName);
+            Log.d("Order Item", "Quantity: " + quantity);
+            Log.d("Order Item", "price: " + price);
 
-            //Wrap the text in status
-            bev_status.setSingleLine(false); // Allow multiple lines
-            bev_status.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)); // Adjust weight
+            total_price += price * quantity;
 
-            // Set text values
-            bev_name.setText(item.getBeverage().getName());
-            bev_price.setText(getString(R.string.Order_item_price, item.getOrderItem().getItemPrice()));
-            bev_quantity.setText(getString(R.string.Order_quantity, item.getOrderItem().getItemQuantity()));
-            bev_status.setText(item.getOrderItem().getItemStatus() == 1 ? "Served" : "Not served");
-
-            // Set padding for separation in dp
-            int padding = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()
-            );
-            bev_name.setPadding(padding, 5, padding, 0);
-            bev_price.setPadding(padding, 5, padding, 0);
-            bev_quantity.setPadding(padding, 5, padding, 0);
-            bev_status.setPadding(padding, 5, padding, 0);
-
-            // Add views to row
-            tableRow.addView(bev_name);
-            tableRow.addView(bev_price);
-            tableRow.addView(bev_quantity);
-            tableRow.addView(bev_status);
-
-            // Add row to table
-            ItemTable.addView(tableRow);
+            if (existingRows.containsKey(bevName)) {
+                updateRow(existingRows.get(bevName), quantity, price);
+            } else {
+                addNewRow(item);
+            }
         }
 
-        TextView totalAmount = findViewById(R.id.totalPrice);
-        totalAmount.setText(getString(R.string.Order_total_price, total_amount));
+        updateTotalPrice();
     }
 
+    // Updates an existing row’s quantity and price
+    private void updateRow(TableRow row, int newQuantity, float itemPrice) {
+        TextView quantityView = (TextView) row.getChildAt(2);
+        TextView priceView = (TextView) row.getChildAt(1);
 
-    public void showTotalAmount(Order order) {
-        TextView total_amount = findViewById(R.id.totalPrice);
-        total_amount.setText(getString(R.string.Order_total_price, order.getTotalPrice()));
+        Log.d("Order Item", "item price: " + itemPrice);
+        Log.d("Order Item", "quantity: " + newQuantity);
+        Log.d("Order Item", "update price view: " + itemPrice * newQuantity);
+
+        quantityView.setText(getString(R.string.Order_quantity, newQuantity));
+        priceView.setText(getString(R.string.Order_item_price, itemPrice * newQuantity));
     }
+
+    // Adds a new row for a beverage item
+    private void addNewRow(OrderItemBeverageDTO item) {
+        TableLayout itemTable = findViewById(R.id.orderDetailTable);
+        TableRow tableRow = new TableRow(this);
+
+        TextView bevName = createTextView(item.getBeverage().getName());
+        float price = item.getOrderItem().getItemPrice();
+        int quantity = item.getOrderItem().getItemQuantity();
+        TextView bevPrice = createTextView(getString(R.string.Order_item_price, price * quantity));
+        TextView bevQuantity = createTextView(getString(R.string.Order_quantity, quantity));
+        TextView bevStatus = createTextView(item.getOrderItem().getItemStatus() == 1 ? "Served" : "Not served");
+        ImageButton deleteButton = createDeleteButton(tableRow, item);
+
+        // Add views to row
+        tableRow.addView(bevName);
+        tableRow.addView(bevPrice);
+        tableRow.addView(bevQuantity);
+        tableRow.addView(bevStatus);
+        tableRow.addView(deleteButton);
+
+        itemTable.addView(tableRow);
+
+        updateTotalPrice();
+    }
+
+    // Creates a styled TextView
+    private TextView createTextView(String text) {
+        TextView textView = new TextView(this);
+        int padding = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()
+        );
+
+        textView.setText(text);
+        textView.setPadding(padding, 5, padding, 0);
+        textView.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        return textView;
+    }
+
+    // Creates a delete button
+    private ImageButton createDeleteButton(TableRow row, OrderItemBeverageDTO item) {
+        ImageButton deleteButton = new ImageButton(this);
+        int padding = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()
+        );
+
+        deleteButton.setImageResource(android.R.drawable.ic_delete);
+        deleteButton.setBackgroundResource(android.R.color.transparent);
+        deleteButton.setPadding(padding, padding, padding, padding);
+        deleteButton.setLayoutParams(new TableRow.LayoutParams(100, 100));
+        deleteButton.setOnClickListener(v -> removeRow(row, item));
+
+        return deleteButton;
+    }
+
+    // Removes or updates a row based on quantity
+    private void removeRow(TableRow row, OrderItemBeverageDTO item) {
+        TableLayout itemTable = findViewById(R.id.orderDetailTable);
+        TextView quantityView = (TextView) row.getChildAt(2);
+        TextView priceView = (TextView) row.getChildAt(1);
+
+        int currentQuantity = Integer.parseInt(quantityView.getText().toString().replaceAll("[^0-9]", ""));
+        float itemPrice = item.getOrderItem().getItemPrice();
+
+        if (currentQuantity > 1) {
+            int newQuantity = currentQuantity - 1;
+            //Update database
+            presenter.updateOrderItem(item.getOrderItem().getOrderId(), item.getBeverage().getId(), newQuantity, success -> {
+                if (!success) {
+                    Log.e("Update Item", "Failed to update order item.");
+                    Toast.makeText(this, "Error updating beverage in server. Please try again later!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d("Update Item", "Order item updated successfully!");
+                    quantityView.setText(getString(R.string.Order_quantity, newQuantity));
+                    priceView.setText(getString(R.string.Order_item_price, itemPrice * newQuantity));
+                    updateTotalPrice();
+                }
+            });
+        } else {
+            //Update database
+            presenter.deleteOrderItem(item.getOrderItem().getOrderId(), item.getBeverage().getId(), success -> {
+                if (!success) {
+                    Log.e("Delete Item", "Failed to delete order item.");
+                    Toast.makeText(this, "Error delete beverage in server. Please try again later!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d("Delete Item", "Order item deleted successfully!");
+                    itemTable.removeView(row);
+                    updateTotalPrice();
+                }
+            });
+        }
+    }
+
+    // Updates the total price dynamically
+    private void updateTotalPrice() {
+        TableLayout itemTable = findViewById(R.id.orderDetailTable);
+        float totalAmount = 0;
+
+        for (int i = 0; i < itemTable.getChildCount(); i++) {
+            TableRow row = (TableRow) itemTable.getChildAt(i);
+            TextView priceView = (TextView) row.getChildAt(1);
+            totalAmount += Float.parseFloat(priceView.getText().toString().replaceAll("[^0-9.]", ""));
+        }
+
+        updateTotalPrice(totalAmount);
+    }
+
+    // Overloaded method for updating total price
+    private void updateTotalPrice(float totalAmount) {
+        total.setText(getString(R.string.Order_total_price, totalAmount));
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

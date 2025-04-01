@@ -5,20 +5,28 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 public class TokenManager {
+    private static TokenManager instance;
     private final SharedPreferences sharedPreferences;
+    private final SharedPreferences.Editor editor;
 
-    public TokenManager(Context context) {
+    private TokenManager(Context context) {
         sharedPreferences = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE);
+        this.editor = sharedPreferences.edit();
+    }
+
+    public static synchronized TokenManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new TokenManager(context.getApplicationContext());
+        }
+        return instance;
     }
 
     public void saveAccessToken(String accessToken) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("access_token", accessToken);
         editor.apply();
     }
 
     public void saveRefreshToken(String refreshToken) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("refresh_token", refreshToken);
         editor.apply();
     }
@@ -34,13 +42,11 @@ public class TokenManager {
     }
 
     public void clearAccessToken() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("access_token");
         editor.apply();
     }
 
     public void clearRefreshToken() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("refresh_token");
         editor.apply();
     }

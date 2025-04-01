@@ -23,6 +23,7 @@
             android:layout_height="50dp"
             android:hint="@string/search_box_hint"
             android:inputType="text"
+            android:textColor="@color/black"
             android:padding="10dp" />
 
         <!-- Scrollable Beverage List -->
@@ -33,50 +34,89 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" />
 
+        <!-- Fixed Header (Stays Visible) -->
         <android.widget.TableLayout
-            android:id="@+id/orderDetailTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
             android:stretchColumns="1">
 
-            <!-- Table Header -->
-            <TableRow>
+            <TableRow
+                android:background="@android:color/darker_gray"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/bev_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:fontFamily="sans-serif-medium"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:text="@string/Order_beverage_title" />
+                    android:text="@string/Order_beverage_title"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/bev_price"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:fontFamily="sans-serif-medium"
-                    android:text="@string/Order_item_price_title" />
+                    android:text="@string/Order_item_price_title"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/bev_quantity"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:fontFamily="sans-serif-medium"
-                    android:text="@string/Order_quantity_title" />
+                    android:text="@string/Order_quantity_title"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/bev_status"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:fontFamily="sans-serif-medium"
-                    android:text="@string/Order_status_title" />
-            </TableRow>
+                    android:text="@string/Order_status_title"
+                    android:textStyle="bold" />
 
-            <!-- Dynamic rows will be added here for each order item -->
+                <TextView
+                    android:id="@+id/bev_delete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/Order_item_delete"
+                    android:textStyle="bold" />
+            </TableRow>
         </android.widget.TableLayout>
+
+        <!-- Scrollable Order List -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="@null">
+
+            <android.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical">
+
+                <android.widget.TableLayout
+                    android:id="@+id/orderDetailTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1">
+
+                    <!-- New Row Here (Dynamically Added) -->
+
+                </android.widget.TableLayout>
+
+            </android.widget.LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
 
         <!-- Total Price -->
         <TextView

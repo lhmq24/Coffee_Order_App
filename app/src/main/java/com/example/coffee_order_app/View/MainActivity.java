@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.coffee_order_app.Adapter.MainActivityAdapter;
 import com.example.coffee_order_app.Interface.MainActivityInterface;
 import com.example.coffee_order_app.Model.TableOrderDTO;
+import com.example.coffee_order_app.Model.TokenManager;
 import com.example.coffee_order_app.Presenter.MainPresenter;
 import com.example.coffee_order_app.R;
 
@@ -64,6 +65,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         Objects.requireNonNull(toolbar.getOverflowIcon()).setTint(ContextCompat.getColor(this, R.color.white));
+        toolbar.setNavigationIcon(R.drawable.ic_logout);
+        toolbar.setNavigationOnClickListener(v -> {
+            // Log out, clear token and move to Log in
+            TokenManager tokenManager = TokenManager.getInstance(this);
+            tokenManager.clearAccessToken();
+            tokenManager.clearRefreshToken();
+            Intent intent = new Intent(MainActivity.this, InitActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         // Initialize UI components
         floorSpinner = findViewById(R.id.floor_spinner);
@@ -118,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Fetch tables and start periodic refresh
         adapter = new MainActivityAdapter(this, floorTableList);
         presenter.getAllTables(floorSpinner.getSelectedItemPosition() + 1);
-//        startPeriodicRefresh();
+        startPeriodicRefresh();
         tables.setAdapter(adapter);
 
         // Click event to open TableActivity

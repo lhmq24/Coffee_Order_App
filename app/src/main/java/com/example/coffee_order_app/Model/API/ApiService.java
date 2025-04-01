@@ -1,18 +1,24 @@
 package com.example.coffee_order_app.Model.API;
 
 import com.example.coffee_order_app.Model.Beverage;
-import com.example.coffee_order_app.Model.Order;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 import com.example.coffee_order_app.Model.Request.LogInRequest;
+import com.example.coffee_order_app.Model.Request.PaymentRequest;
+import com.example.coffee_order_app.Model.Request.addOrderItemRequest;
+import com.example.coffee_order_app.Model.Request.updateOrderItemRequest;
 import com.example.coffee_order_app.Model.Response.LogInResponse;
+import com.example.coffee_order_app.Model.Response.PaymentResponse;
 import com.example.coffee_order_app.Model.Response.RefreshResponse;
 import com.example.coffee_order_app.Model.Response.ValidateResponse;
+import com.example.coffee_order_app.Model.Response.deleteOrderItemResponse;
+import com.example.coffee_order_app.Model.Response.updateOrderItemResponse;
 import com.example.coffee_order_app.Model.TableOrderDTO;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -40,8 +46,20 @@ public interface ApiService {
     @GET("data/OrderItemBeverage.php")
     Call<List<OrderItemBeverageDTO>> getOrderItems(@Query("floor_number") int floor_number, @Query("tbl_number") int tableNumber);
 
-    @POST("data/Order.php")
-    Call<Order> getOrder(@Body int orderId);
+    @POST("data/OrderItemBeverage.php")
+    Call<List<OrderItemBeverageDTO>> addOrderItem(@Body addOrderItemRequest request);
+
+    @POST("data/OrderItems.php")
+    Call<updateOrderItemResponse> updateOrderItem(@Body updateOrderItemRequest request);
+
+    @DELETE("data/OrderItems.php")
+    Call<deleteOrderItemResponse> deleteOrderItem(
+            @Query("ord_id") int orderId,
+            @Query("bev_id") int bevId
+    );
+
+    @POST("data/Orders.php")
+    Call<PaymentResponse> payOrder(@Body PaymentRequest request);
 
     @POST("auth/refresh.php")
     Call<RefreshResponse> refreshToken(@Header("Authorization") String authHeader);

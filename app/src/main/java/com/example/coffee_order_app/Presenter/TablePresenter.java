@@ -2,12 +2,19 @@ package com.example.coffee_order_app.Presenter;
 
 import android.util.Log;
 
+import com.example.coffee_order_app.Interface.OrderItemCallback;
+import com.example.coffee_order_app.Interface.OrderPayCallback;
 import com.example.coffee_order_app.Interface.TableActivityInterface;
 import com.example.coffee_order_app.Model.API.ApiClient;
 import com.example.coffee_order_app.Model.API.ApiService;
 import com.example.coffee_order_app.Model.Beverage;
-import com.example.coffee_order_app.Model.Order;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
+import com.example.coffee_order_app.Model.Request.PaymentRequest;
+import com.example.coffee_order_app.Model.Request.addOrderItemRequest;
+import com.example.coffee_order_app.Model.Request.updateOrderItemRequest;
+import com.example.coffee_order_app.Model.Response.PaymentResponse;
+import com.example.coffee_order_app.Model.Response.deleteOrderItemResponse;
+import com.example.coffee_order_app.Model.Response.updateOrderItemResponse;
 
 import java.util.List;
 
@@ -97,29 +104,93 @@ public class TablePresenter {
         });
     }
 
-
-    public void showTotalAmount(int orderId) {
-        Call<Order> call = apiService.getOrder(orderId);
+    public void addOrderItem(int floorNumber, int tableNumber, int bevId, String bevName) {
+        addOrderItemRequest request = new addOrderItemRequest(floorNumber, tableNumber, bevId, bevName);
+        Call<List<OrderItemBeverageDTO>> call = apiService.addOrderItem(request);
         call.enqueue(new Callback<>() {
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<Order> call, Response<Order> response) {
+            public void onResponse(Call<List<OrderItemBeverageDTO>> call, Response<List<OrderItemBeverageDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("Fetch OrderAmount", "Fetch success");
-                    view.showTotalAmount(response.body());
+                    Log.d("Fetch new OrderItem", "Fetch order item successfully, number of items: " + response.body().size());
+                    view.addTableRows(response.body());
                 } else {
-                    Log.d("Fetch OrderAmount", "Server error");
-                    view.showError("Failed to fetch order items");
+                    Log.d("Fetch new OrderItem", "Server error");
+                    view.showError("No order to get!");
                 }
             }
 
             @Override
             @EverythingIsNonNull
-            public void onFailure(Call<Order> call, Throwable t) {
+            public void onFailure(Call<List<OrderItemBeverageDTO>> call, Throwable t) {
                 view.showError(t.getMessage());
-                Log.d("Fetch OrderAmount", "Network error: " + t.getMessage());
+                Log.d("Fetch new OrderItem", "Network error: " + t.getMessage());
             }
-
         });
     }
+
+    public void deleteOrderItem(int ord_id, int bev_id, OrderItemCallback callback) {
+        Call<deleteOrderItemResponse> call = apiService.deleteOrderItem(ord_id, bev_id);
+        call.enqueue(new Callback<deleteOrderItemResponse>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<deleteOrderItemResponse> call, Response<deleteOrderItemResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Delete Item", "Response: " + response.body());
+                    callback.onResult(response.body().isSuccess());
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<deleteOrderItemResponse> call, Throwable t) {
+                Log.e("Delete Item", "Network error: " + t.getMessage());
+                callback.onResult(false);
+            }
+        });
+    }
+
+    public void updateOrderItem(int ord_id, int bev_id, int new_quantity, OrderItemCallback callback) {
+        updateOrderItemRequest request = new updateOrderItemRequest(ord_id, bev_id, new_quantity);
+        Call<updateOrderItemResponse> call = apiService.updateOrderItem(request);
+        call.enqueue(new Callback<updateOrderItemResponse>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<updateOrderItemResponse> call, Response<updateOrderItemResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResult(response.body().isSuccess());
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<updateOrderItemResponse> call, Throwable t) {
+                Log.e("Update Item", "Network error: " + t.getMessage());
+                callback.onResult(false);
+            }
+        });
+    }
+
+    public void payOrder(int floorNumber, int tableNumber, OrderPayCallback callback) {
+        PaymentRequest request = new PaymentRequest(floorNumber, tableNumber);
+        Call<PaymentResponse> call = apiService.payOrder(request);
+        call.enqueue(new Callback<PaymentResponse>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Pay order", "presenter call successfully");
+                    callback.onResult(response.body().isSuccess());
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<PaymentResponse> call, Throwable t) {
+                Log.e("Pay order", "Network error: " + t.getMessage());
+                callback.onResult(false);
+            }
+        });
+    }
+
 }

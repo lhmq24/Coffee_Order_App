@@ -48,7 +48,6 @@ public class TableBeveragesAdapter extends BaseAdapter {
 
         ImageView bevImage = convertView.findViewById(R.id.bev_img);
         TextView bevName = convertView.findViewById(R.id.bev_name);
-        TextView bevPrice = convertView.findViewById(R.id.bev_price);
 
 
         bevName.setText(view.getString(R.string.beverage_name, bev.getName()));

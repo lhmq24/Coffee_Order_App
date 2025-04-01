@@ -18,7 +18,7 @@ public class InitActivity extends AppCompatActivity implements InitActivityInter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tokenManager = new TokenManager(this); // Initialize token manager
+        tokenManager = TokenManager.getInstance(this);
         presenter = new InitActivityPresenter(this, this);
 
         // Check if there's an access token

@@ -24,7 +24,7 @@ public class InitActivityPresenter {
 
     public InitActivityPresenter(InitActivityInterface view, Context context) {
         this.view = view;
-        this.tokenManager = new TokenManager(context);
+        this.tokenManager = TokenManager.getInstance(context);
         apiService = ApiClient.getClient().create(ApiService.class);
     }
 
