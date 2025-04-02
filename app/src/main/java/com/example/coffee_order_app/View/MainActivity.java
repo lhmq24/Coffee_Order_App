@@ -166,7 +166,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         Log.d("Sort tables", "Floor list size before show: " + floorTableList.size());
         floorTableList.clear();
         floorTableList.addAll(new ArrayList<>(tablesList));
+
         adapter.notifyDataSetChanged();
+
         Log.d("Sort tables", "List size after show: " + tablesList.size());
         Log.d("Sort tables", "Floor list size after show: " + floorTableList.size());
     }
@@ -199,5 +201,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         tableList.clear(); // Clear previous data
         tableList.addAll(tablesList); // Store the new fetched tables
     }
+
+    public int getSortSpinnerSelection() {
+        return sortSpinner.getSelectedItemPosition();  // Return the selected item index in the spinner
+    }
+
 
 }

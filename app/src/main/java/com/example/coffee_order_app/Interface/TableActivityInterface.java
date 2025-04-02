@@ -1,14 +1,14 @@
 package com.example.coffee_order_app.Interface;
 
-import com.example.coffee_order_app.Model.Beverage;
+import com.example.coffee_order_app.Model.BeveragePriceDTO;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 
 import java.util.List;
 
 public interface TableActivityInterface {
-    void showMatchedBeverages(List<Beverage> beverages);
+    void showMatchedBeverages(List<BeveragePriceDTO> beverages);
 
     void addTableRows(List<OrderItemBeverageDTO> items);
 
-    public void showError(String error);
+    void showError(String error);
 }

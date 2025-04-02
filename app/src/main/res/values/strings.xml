@@ -7,10 +7,11 @@
     <string name="table_amount">Total: %.0f VND</string>
     <string name="table_image_description">Table %d Image</string>
     <string name="pay_time">Paid at: %1$s</string>
-    <string name="receipt_table_number">Table %d Receipt</string>
+    <string name="floor_number">Floor %d</string>
+    <string name="receipt_table_number">Table %d Beverages</string>
     <string name="search_box_hint">Search for beverages</string>
-    <string name="Order_beverage_title">Beverage name</string>
-    <string name="Order_item_price_title">Total Price</string>
+    <string name="Order_beverage_title">Name</string>
+    <string name="Order_item_price_title">Subtotal</string>
     <string name="Order_quantity_title">Quantity</string>
     <string name="Order_status_title">Status</string>
     <string name="Order_beverage">%s</string>
@@ -35,4 +36,5 @@
     <string name="forgot_password_text"><u>Forgot password?</u></string>
     <string name="beverage_name">%s</string>
     <string name="beverage_price">%.0f VND</string>
+    <string name="Order_item_quantity">Quantity: %d</string>
 </resources>

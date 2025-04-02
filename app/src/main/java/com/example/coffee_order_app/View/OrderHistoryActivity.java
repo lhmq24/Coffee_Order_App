@@ -2,6 +2,7 @@ package com.example.coffee_order_app.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,35 +34,45 @@ public class OrderHistoryActivity extends AppCompatActivity implements HistoryAc
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.go_back);
+        int color = getColor(R.color.white);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setTint(color);
         toolbar.setNavigationOnClickListener(v -> finish());
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         TextView title = findViewById(R.id.toolbar_title);
         title.setText(R.string.order_history);
         toolbar.setBackgroundResource(R.color.toolbar_color);
 
-        // Initialize ListView
+        // Initialize
         listView = findViewById(R.id.order_list_view);
         HistoryList = new ArrayList<>();
-        adapter = new OrderHistoryActivityAdapter(this, HistoryList);
-        listView.setAdapter(adapter);
 
-        // Initialize presenter
+        adapter = new OrderHistoryActivityAdapter(OrderHistoryActivity.this, HistoryList);
+        Log.e("HistoryPresenter", "Initialize adapter successfully");
+
         presenter = new HistoryPresenter(this);
+        Log.e("HistoryPresenter", "Initialize presenter successfully");
         presenter.getPaidOrders();
+        Log.e("HistoryPresenter", "get Paid orders successfully");
+
+        listView.setAdapter(adapter);
+        Log.e("HistoryPresenter", "set adapter successfully");
 
         // Click event for order details
         listView.setOnItemClickListener((parent, view, position, id) -> {
             TableOrderDTO order = HistoryList.get(position);
             Intent intent = new Intent(OrderHistoryActivity.this, OrderDetailActivity.class);
-            intent.putExtra("tableNumber", order.getTable().getTableNumber());
+
+            intent.putExtra("TableOrderDTO", order);
             startActivity(intent);
         });
     }
 
     @Override
     public void showHistories(List<TableOrderDTO> orders) {
+        Log.e("HistoryPresenter", "History size from response: " + orders.size());
         HistoryList.clear();
         HistoryList.addAll(orders);
+        Log.e("HistoryPresenter", "HistoryList size: " + HistoryList.size());
         adapter.notifyDataSetChanged();
     }
 }

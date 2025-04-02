@@ -1,5 +1,6 @@
 package com.example.coffee_order_app.Adapter;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +9,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.coffee_order_app.Model.Beverage;
+import com.bumptech.glide.Glide;
+import com.example.coffee_order_app.Model.API.ApiClient;
+import com.example.coffee_order_app.Model.BeveragePriceDTO;
 import com.example.coffee_order_app.R;
 import com.example.coffee_order_app.View.TableActivity;
 
 import java.util.List;
 
 public class TableBeveragesAdapter extends BaseAdapter {
-    private TableActivity view;
-    private List<Beverage> BeverageList;
+    private Context context;
+    private List<BeveragePriceDTO> BeverageList;
 
-    public TableBeveragesAdapter(TableActivity context, List<Beverage> list) {
-        this.view = context;
+    public TableBeveragesAdapter(TableActivity context, List<BeveragePriceDTO> list) {
+        this.context = context;
         this.BeverageList = list;
     }
 
@@ -41,20 +44,24 @@ public class TableBeveragesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(view).inflate(R.layout.bev_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.bev_item, parent, false);
         }
 
-        Beverage bev = BeverageList.get(position);
+        BeveragePriceDTO bev = BeverageList.get(position);
+        if (BeverageList.isEmpty()) {
+            Log.d("Table beverage adapter", "Beverage List is null or empty, cannot convert the View");
+        }
 
         ImageView bevImage = convertView.findViewById(R.id.bev_img);
         TextView bevName = convertView.findViewById(R.id.bev_name);
+        TextView bevPrice = convertView.findViewById(R.id.bev_price);
 
+        Glide.with(context)
+                .load(ApiClient.getURL() + bev.getBev().getImg())
+                .into(bevImage);
+        bevName.setText(context.getString(R.string.beverage_name, bev.getBev().getName()));
+        bevPrice.setText(context.getString(R.string.beverage_price, bev.getPrice().getPriceAmount()));
 
-        bevName.setText(view.getString(R.string.beverage_name, bev.getName()));
-//        bevName.setText(view.getString(R.string.beverage_price, ));
-        if (BeverageList == null || BeverageList.isEmpty()) {
-            Log.d("Table beverage adapter", "Beverage List is null or empty, cannot convert the View");
-        }
         return convertView;
     }
 }

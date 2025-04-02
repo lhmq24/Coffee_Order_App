@@ -10,12 +10,18 @@ public class Beverage {
     @SerializedName("bev_name")
     private String name;
 
+    @SerializedName("bev_img")
+    private String img;
+
 
     // Constructor
-    public Beverage(int id, String name) {
+
+    public Beverage(int id, String name, String img) {
         this.id = id;
         this.name = name;
+        this.img = img;
     }
+
 
     // Getter methods
 
@@ -28,6 +34,10 @@ public class Beverage {
         return name;
     }
 
+    public String getImg() {
+        return img;
+    }
+
     // Setter methods
     public void setId(int id) {
         this.id = id;
@@ -35,5 +45,9 @@ public class Beverage {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

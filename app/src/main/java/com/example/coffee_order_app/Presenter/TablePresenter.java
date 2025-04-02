@@ -7,7 +7,7 @@ import com.example.coffee_order_app.Interface.OrderPayCallback;
 import com.example.coffee_order_app.Interface.TableActivityInterface;
 import com.example.coffee_order_app.Model.API.ApiClient;
 import com.example.coffee_order_app.Model.API.ApiService;
-import com.example.coffee_order_app.Model.Beverage;
+import com.example.coffee_order_app.Model.BeveragePriceDTO;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 import com.example.coffee_order_app.Model.Request.PaymentRequest;
 import com.example.coffee_order_app.Model.Request.addOrderItemRequest;
@@ -35,11 +35,11 @@ public class TablePresenter {
 
     public void queryBeverages() {
         Log.d("Fetch Beverages", "Fetch all beverages");
-        Call<List<Beverage>> call = apiService.queryBeverages();
-        call.enqueue(new Callback<List<Beverage>>() {
+        Call<List<BeveragePriceDTO>> call = apiService.queryBeverages();
+        call.enqueue(new Callback<List<BeveragePriceDTO>>() {
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<List<Beverage>> call, Response<List<Beverage>> response) {
+            public void onResponse(Call<List<BeveragePriceDTO>> call, Response<List<BeveragePriceDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d("Fetch Beverages", "Fetch all beverages successfully, number of bev: " + response.body().size());
                     view.showMatchedBeverages(response.body());
@@ -50,7 +50,7 @@ public class TablePresenter {
 
             @Override
             @EverythingIsNonNull
-            public void onFailure(Call<List<Beverage>> call, Throwable t) {
+            public void onFailure(Call<List<BeveragePriceDTO>> call, Throwable t) {
                 Log.e("Fetch Beverages", "Network error: " + t.getMessage());
             }
         });
@@ -58,11 +58,11 @@ public class TablePresenter {
 
     public void queryBeverages(String query) {
         Log.d("Fetch Beverages", "The bev name inputted is: " + query);
-        Call<List<Beverage>> call = apiService.queryBeverages(query);
-        call.enqueue(new Callback<List<Beverage>>() {
+        Call<List<BeveragePriceDTO>> call = apiService.queryBeverages(query);
+        call.enqueue(new Callback<List<BeveragePriceDTO>>() {
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<List<Beverage>> call, Response<List<Beverage>> response) {
+            public void onResponse(Call<List<BeveragePriceDTO>> call, Response<List<BeveragePriceDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d("Fetch Beverages", "Fetch beverages successfully, number of bev: " + response.body().size());
                     view.showMatchedBeverages(response.body());
@@ -73,7 +73,7 @@ public class TablePresenter {
 
             @Override
             @EverythingIsNonNull
-            public void onFailure(Call<List<Beverage>> call, Throwable t) {
+            public void onFailure(Call<List<BeveragePriceDTO>> call, Throwable t) {
                 Log.e("Fetch Beverages", "Network error: " + t.getMessage());
             }
         });

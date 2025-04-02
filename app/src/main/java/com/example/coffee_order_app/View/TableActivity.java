@@ -23,7 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.coffee_order_app.Adapter.TableBeveragesAdapter;
 import com.example.coffee_order_app.Interface.TableActivityInterface;
-import com.example.coffee_order_app.Model.Beverage;
+import com.example.coffee_order_app.Model.BeveragePriceDTO;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 import com.example.coffee_order_app.Presenter.TablePresenter;
 import com.example.coffee_order_app.R;
@@ -38,7 +38,7 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
     Toolbar toolbar;
     private EditText search_box;
     private ListView matchedBeveragesView;
-    private List<Beverage> matchedBeveragesList;
+    private List<BeveragePriceDTO> matchedBeveragesList;
     private TableLayout ItemTable;
     private TextView total;
     private Button button;
@@ -62,6 +62,8 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
             throw new RuntimeException(e);
         }
         toolbar.setNavigationIcon(R.drawable.go_back);
+        int color = getColor(R.color.white);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setTint(color);
         toolbar.setNavigationOnClickListener(v -> finish());
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         toolbar.setBackgroundResource(R.color.toolbar_color);
@@ -81,11 +83,11 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
         matchedBeveragesView.setAdapter(beverageAdapter);
 
         matchedBeveragesView.setOnItemClickListener((parent, view, position, id) -> {
-            Beverage selectedBeverage = matchedBeveragesList.get(position);
+            BeveragePriceDTO selectedBeverage = matchedBeveragesList.get(position);
             int floorNumber = getIntent().getIntExtra("tableFloor", -1);
             int tableNumber = getIntent().getIntExtra("tableNumber", -1);
-            int bev_id = selectedBeverage.getId();
-            String bev_name = selectedBeverage.getName();
+            int bev_id = selectedBeverage.getBev().getId();
+            String bev_name = selectedBeverage.getBev().getName();
             //Add select beverage
             presenter.addOrderItem(floorNumber, tableNumber, bev_id, bev_name);
         });
@@ -137,7 +139,7 @@ public class TableActivity extends AppCompatActivity implements TableActivityInt
         });
     }
 
-    public void showMatchedBeverages(List<Beverage> beverages) {
+    public void showMatchedBeverages(List<BeveragePriceDTO> beverages) {
         if (beverages == null || beverages.isEmpty()) {
             Log.d("TableActivity", "No beverages returned!");
             return;

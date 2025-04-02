@@ -11,4 +11,6 @@ public interface MainActivityInterface {
 
     void updateTableList(List<TableOrderDTO> tableList);
 
+    int getSortSpinnerSelection();
+
 }

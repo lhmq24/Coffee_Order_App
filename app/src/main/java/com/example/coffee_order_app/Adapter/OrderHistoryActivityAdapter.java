@@ -50,6 +50,7 @@ public class OrderHistoryActivityAdapter extends BaseAdapter {
         TableOrderDTO TableOrderDTO = HistoryList.get(position);
 
         ImageView tableImage = convertView.findViewById(R.id.tableImage);
+        TextView floorNumber = convertView.findViewById(R.id.history_floor_number);
         TextView tableNumber = convertView.findViewById(R.id.history_table_number);
         TextView tableAmount = convertView.findViewById(R.id.history_table_amount);
         TextView paidTime = convertView.findViewById(R.id.history_paid_time);
@@ -57,7 +58,11 @@ public class OrderHistoryActivityAdapter extends BaseAdapter {
         ;
         //Set data for View
         Log.d("Order History Adapter", "image uri: " + ApiClient.getURL() + TableOrderDTO.getTable().getTableImage());
-        Glide.with(context).load(ApiClient.getURL() + TableOrderDTO.getTable().getTableImage()).into(tableImage);
+        Log.d("Order History Adapter", "Context of glide: " + context.toString());
+        Glide.with(context)
+                .load(ApiClient.getURL() + TableOrderDTO.getTable().getTableImage())
+                .into(tableImage);
+        floorNumber.setText(context.getString(R.string.floor_number, TableOrderDTO.getTable().getFloorNumber()));
         tableNumber.setText(context.getString(R.string.table_number, TableOrderDTO.getTable().getTableNumber()));
         tableAmount.setText(context.getString(R.string.table_amount, TableOrderDTO.getOrder().getTotalPrice()));
         // Convert timestamp

@@ -1,6 +1,6 @@
 package com.example.coffee_order_app.Model.API;
 
-import com.example.coffee_order_app.Model.Beverage;
+import com.example.coffee_order_app.Model.BeveragePriceDTO;
 import com.example.coffee_order_app.Model.OrderItemBeverageDTO;
 import com.example.coffee_order_app.Model.Request.LogInRequest;
 import com.example.coffee_order_app.Model.Request.PaymentRequest;
@@ -37,14 +37,17 @@ public interface ApiService {
     @GET("data/TableOrder.php")
     Call<List<TableOrderDTO>> getPaidOrders(@Query("status") int status);
 
-    @GET("data/Beverages.php")
-    Call<List<Beverage>> queryBeverages(@Query("bev_name") String bev_name);
+    @GET("data/BeveragePrice.php")
+    Call<List<BeveragePriceDTO>> queryBeverages(@Query("bev_name") String bev_name);
 
-    @GET("data/Beverages.php")
-    Call<List<Beverage>> queryBeverages();
+    @GET("data/BeveragePrice.php")
+    Call<List<BeveragePriceDTO>> queryBeverages();
 
     @GET("data/OrderItemBeverage.php")
     Call<List<OrderItemBeverageDTO>> getOrderItems(@Query("floor_number") int floor_number, @Query("tbl_number") int tableNumber);
+
+    @GET("data/OrderItemBeverage.php")
+    Call<List<OrderItemBeverageDTO>> getOrderItems(@Query("floor_number") int floor_number, @Query("tbl_number") int tableNumber, @Query("ord_id") int ord_id);
 
     @POST("data/OrderItemBeverage.php")
     Call<List<OrderItemBeverageDTO>> addOrderItem(@Body addOrderItemRequest request);

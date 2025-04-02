@@ -2,7 +2,6 @@ package com.example.coffee_order_app.Adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,6 @@ public class MainActivityAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        long startTime = System.currentTimeMillis();
 
         ViewHolder holder;
         if (convertView == null) {
@@ -66,7 +64,6 @@ public class MainActivityAdapter extends BaseAdapter {
             holder.tableAmount = convertView.findViewById(R.id.tableAmount);
             convertView.setTag(holder); // Lưu ViewHolder vào View
         } else {
-            Log.d("AdapterDebug", "The View is reuse");
             holder = (ViewHolder) convertView.getTag(); // Lấy lại ViewHolder đã lưu
         }
 
@@ -77,8 +74,6 @@ public class MainActivityAdapter extends BaseAdapter {
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.error)
                 .into(holder.tableImage);
-
-        long imageLoadTime = System.currentTimeMillis();
 
         holder.tableNumber.setText(context.getString(R.string.table_number, table.getTable().getTableNumber()));
         holder.tableCapacity.setText(context.getString(R.string.table_capacity, table.getTable().getTableCapacity()));

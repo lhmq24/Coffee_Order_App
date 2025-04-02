@@ -55,7 +55,10 @@ public class MainPresenter {
                 filteredTables.add(table);
             }
         }
-        view.showTables(filteredTables);
+
+        // Call sortTables to apply sorting after filtering
+        int sortCriteria = view.getSortSpinnerSelection();  // Get the current sort spinner selection
+        sortTables(sortCriteria, filteredTables);  // Reapply sorting after filtering
     }
 
     public void sortTables(int criteria, List<TableOrderDTO> tableList) {
@@ -65,6 +68,9 @@ public class MainPresenter {
         List<TableOrderDTO> sortedList = new ArrayList<>(tableList);
 
         switch (criteria) {
+            case 0:
+                sortedList.sort(Comparator.comparingInt(t -> t.getTable().getTableNumber()));
+                break;
             case 1:
                 sortedList.sort(Collections.reverseOrder(Comparator.comparingInt(t -> t.getTable().getStatus())));
                 break;

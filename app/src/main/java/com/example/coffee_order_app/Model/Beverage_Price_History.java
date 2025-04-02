@@ -2,7 +2,6 @@ package com.example.coffee_order_app.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.sql.Timestamp;
 
 public class Beverage_Price_History {
     @SerializedName("price_id")
@@ -12,12 +11,12 @@ public class Beverage_Price_History {
     private int bevId;
 
     @SerializedName("price_daystart")
-    private Timestamp dayStart;
+    private String dayStart;
 
     @SerializedName("price_amount")
     private float priceAmount;
 
-    public Beverage_Price_History(int priceId, int bevId, Timestamp dayStart, float priceAmount) {
+    public Beverage_Price_History(int priceId, int bevId, String dayStart, float priceAmount) {
         this.priceId = priceId;
         this.bevId = bevId;
         this.dayStart = dayStart;
@@ -30,30 +29,31 @@ public class Beverage_Price_History {
         return priceId;
     }
 
-    public void setPriceId(int priceId) {
-        this.priceId = priceId;
-    }
-
     public int getBevId() {
         return bevId;
     }
 
-    public void setBevId(int bevId) {
-        this.bevId = bevId;
-    }
-
-    //Setter
-
-    public Timestamp getDayStart() {
+    public String getDayStart() {
         return dayStart;
-    }
-
-    public void setDayStart(Timestamp dayStart) {
-        this.dayStart = dayStart;
     }
 
     public float getPriceAmount() {
         return priceAmount;
+    }
+
+
+    //Setter
+
+    public void setDayStart(String dayStart) {
+        this.dayStart = dayStart;
+    }
+
+    public void setPriceId(int priceId) {
+        this.priceId = priceId;
+    }
+
+    public void setBevId(int bevId) {
+        this.bevId = bevId;
     }
 
     public void setPriceAmount(float priceAmount) {

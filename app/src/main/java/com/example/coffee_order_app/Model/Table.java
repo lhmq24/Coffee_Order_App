@@ -2,7 +2,9 @@ package com.example.coffee_order_app.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Table {
+import java.io.Serializable;
+
+public class Table implements Serializable {
 
     @SerializedName("tbl_id")
     private int id;
