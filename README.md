@@ -14,6 +14,7 @@ This repo is with learning-purpose, create an Android app with Java for café st
 
 # Conceptual Data Model
 <img width="1224" height="654" alt="image" src="https://github.com/user-attachments/assets/c6187331-2302-49a5-9cc1-c5014240d65b" />
+
 - Database designed to stores beverage price history to make orders be consistent.
 - Also designed to manage staff sessions and role management but not implemented yet.
 - DBMS: MySQL (XAMPP)
