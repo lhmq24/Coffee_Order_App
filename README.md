@@ -27,6 +27,7 @@ This repo is with learning-purpose, create an Android app with Java for café st
   cd https://github.com/lhmq24/Coffee_Order_App
   ```
 - Open 'build.gradle.kts' (App level) and click "Sync Now" for dependencies downloading.
+- Run the project.
   
 ## For debugging with real devices
 - Enable "Developer Mode" on your phone"
