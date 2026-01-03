@@ -24,7 +24,7 @@ This repo is with learning-purpose, create an Android app with Java for café st
 - Clone repo
   ```
   git clone https://github.com/lhmq24/Coffee_Order_App.git
-  cd https://github.com/lhmq24/Coffee_Order_App
+  cd Coffee_Order_App
   ```
 - Open 'build.gradle.kts' (App level) and click "Sync Now" for dependencies downloading.
 - Run the project.
@@ -34,7 +34,7 @@ This repo is with learning-purpose, create an Android app with Java for café st
 - In "Developer Options" turn on USB Debugging.
 - Use your phone cable connect your PC with your phone, accept the RSA key if the dialog appears.
 - Now, click Run 'app' or `Shift + F10`
-- The app Login Page will be opend on your screen.
+- The app Login Page will be opened on your screen.
 
 # Improvements needed
 - Only support staffs, can be develop to support admin.
